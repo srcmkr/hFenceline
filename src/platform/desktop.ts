@@ -72,3 +72,24 @@ export function consoleUrl(consoleProjectId?: number, serverId?: number): string
   const base = `https://console.hetzner.com/projects/${consoleProjectId}`;
   return serverId ? `${base}/servers/${serverId}/firewalls` : `${base}/firewalls`;
 }
+
+const BACKUP_FILTER = [{ name: "hFenceline Backup", extensions: ["age"] }];
+
+export async function pickBackupSavePath(defaultName: string): Promise<string | null> {
+  const { save } = await import("@tauri-apps/plugin-dialog");
+  return save({ defaultPath: defaultName, filters: BACKUP_FILTER });
+}
+
+export async function pickBackupOpenPath(): Promise<string | null> {
+  const { open } = await import("@tauri-apps/plugin-dialog");
+  const r = await open({ multiple: false, directory: false, filters: BACKUP_FILTER });
+  return typeof r === "string" ? r : null;
+}
+
+export function writeBackupFile(path: string, passphrase: string, payload: string): Promise<void> {
+  return invoke("backup_export", { path, passphrase, payload });
+}
+
+export function readBackupFile(path: string, passphrase: string): Promise<string> {
+  return invoke<string>("backup_import", { path, passphrase });
+}

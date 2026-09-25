@@ -54,7 +54,7 @@ describe("ConfigStore", () => {
     const { store } = await storeWith(EXAMPLE);
     const c = await store.load();
     expect(c?.customers[0]?.projects[0]?.firewalls[0]?.static_ips).toEqual([{ cidr: "198.51.100.10/32", note: "Büro Kunde X" }]);
-    expect(c?.templates[0]?.blocks[1]?.rules[0]?.from).toEqual(["{heim}"]);
+    expect(c?.templates[0]?.blocks[1]?.rules[0]?.from).toEqual(["{home}"]);
   });
 
   it("kommentare bleiben", async () => {
@@ -71,7 +71,27 @@ describe("ConfigStore", () => {
     expect(out).toContain("{ cidr: 192.0.2.0/24, note: Neu }");
     expect(out).toContain("blocks: { ping: true }");
     expect(out).toContain("\n\ntemplates:");
-    expect(out).toContain('- { protocol: all, from: [ "{heim}" ] }');
+    expect(out).toContain('- { protocol: all, from: [ "{home}" ] }');
+  });
+
+  it("{heim}/{fest} -> {home}/{static}", async () => {
+    const text = `version: 1
+language: de
+templates:
+  - id: t
+    name: T
+    blocks:
+      - id: a
+        name: A
+        rules:
+          - { protocol: all, from: ["{heim}", "{fest}", any] } # alt
+customers: []
+`;
+    const { store, files } = await storeWith(text);
+    const c = (await store.load())!;
+    expect(c.templates[0]!.blocks[0]!.rules[0]!.from).toEqual(["{home}", "{static}", "any"]);
+    await store.save(c);
+    expect(files.files.get("config.yaml")).toContain('from: [ "{home}", "{static}", any ] } # alt');
   });
 
   it("reihenfolge per id", async () => {
@@ -112,7 +132,7 @@ customers:
     await store.save(defaultConfig("de"));
     const out = files.files.get("config.yaml")!;
     expect(out).toContain('- { protocol: tcp, port: "80", from: [ any ] }');
-    expect(out).toContain('- { protocol: all, from: [ "{heim}" ] }');
+    expect(out).toContain('- { protocol: all, from: [ "{home}" ] }');
     const again = await new ConfigStore(files).load();
     expect(again).toEqual(defaultConfig("de"));
   });

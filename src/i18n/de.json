@@ -59,7 +59,7 @@
     "dialogTitle": "Home-IP übernehmen",
     "targets_one": "{{count}} Firewall",
     "targets_other": "{{count}} Firewalls",
-    "noTargets": "Keine Firewall nutzt den Baustein mit {heim}.",
+    "noTargets": "Keine Firewall nutzt den Baustein mit {home}.",
     "apply": "Jetzt übernehmen",
     "retryFailed_one": "Fehlschlag wiederholen",
     "retryFailed_other": "{{count}} Fehlschläge wiederholen",
@@ -114,11 +114,11 @@
     "sources": "Quellen",
     "protocol": "Protokoll",
     "port": "Port",
-    "sourcesHint": "Komma-getrennt: any, {heim}, IPv4/Netz",
-    "sourcesHintStatic": "Komma-getrennt: any, {heim}, {fest}, IPv4/Netz",
+    "sourcesHint": "Komma-getrennt: any, {home}, IPv4/Netz",
+    "sourcesHintStatic": "Komma-getrennt: any, {home}, {static}, IPv4/Netz",
     "sourcesRequired": "Mindestens eine Quelle angeben.",
     "invalidSource": "Ungültige Quelle: {{value}}",
-    "noStaticHere": "{fest} ist hier nicht möglich.",
+    "noStaticHere": "{static} ist hier nicht möglich.",
     "invalidPort": "Port 1-65535 oder Bereich (1024-5000)"
   },
   "preview": {
@@ -148,7 +148,7 @@
     },
     "no-home-ip": {
       "title": "Home-IP unbekannt",
-      "text": "Home-IP unbekannt, Regeln mit {heim} fallen weg."
+      "text": "Home-IP unbekannt, Regeln mit {home} fallen weg."
     },
     "no-rules": {
       "title": "Keine eingehende Regel",
@@ -256,7 +256,7 @@
     "description": "Abgedeckte Regeln werden durch Bausteine ersetzt, der Rest bleibt als fremde Regel.",
     "template": "Vorlage",
     "homeQuestion": "Welche Adresse ist deine Home-IP?",
-    "homeHint": "Wird durch {heim} ersetzt, also durch {{ip}}.",
+    "homeHint": "Wird durch {home} ersetzt, also durch {{ip}}.",
     "probablyOldHome": "vermutlich alte Home-IP",
     "currentHome": "aktuelle Home-IP",
     "noHome": "Keine davon",
@@ -470,5 +470,31 @@
     "latest": "Aktuelle Version",
     "available": "Update verfügbar: v{{version}}",
     "unknown": "Update-Prüfung nicht möglich"
+  },
+  "backup": {
+    "title": "Backup",
+    "hint": "Konfiguration und alle Tokens, mit Passphrase verschlüsselt (age). Das Protokoll ist nicht enthalten.",
+    "export": "Backup exportieren",
+    "import": "Backup importieren",
+    "desktopOnly": "Nur in der Desktop-App",
+    "exportTitle": "Backup exportieren",
+    "exportText": "Ohne Passphrase lässt sich das Backup nicht wiederherstellen. Sie wird nirgends gespeichert.",
+    "passphrase": "Passphrase",
+    "passphraseRepeat": "Passphrase wiederholen",
+    "tooShort": "Mindestens 12 Zeichen",
+    "mismatch": "Stimmt nicht überein",
+    "saveAs": "Speichern unter",
+    "saved": "Backup gespeichert",
+    "importTitle": "Backup importieren",
+    "chooseFile": "Datei wählen",
+    "decrypt": "Entschlüsseln",
+    "wrongPassphrase": "Falsche Passphrase",
+    "invalidFile": "Keine gültige Backup-Datei",
+    "summary": "{{customers}} Kunden, {{projects}} Projekte, {{tokens}} Tokens",
+    "created": "Erstellt am {{date}} mit v{{app}}",
+    "replaceWarning": "Ersetzt die aktuelle Konfiguration. Die bisherige wird als config.yaml.bak gesichert.",
+    "replace": "Ersetzen",
+    "restored": "Backup wiederhergestellt",
+    "fromBackup": "Aus Backup wiederherstellen"
   }
 }

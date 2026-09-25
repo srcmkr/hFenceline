@@ -212,8 +212,8 @@ export function parseSources(t: TFunction, text: string, allowStatic: boolean): 
   for (const p of parts) {
     const lower = p.toLowerCase();
     if (lower === "any" || lower === "überall" || lower === "anywhere") out.push(SOURCE_ANY);
-    else if (lower === "{heim}" || lower === "{home}") out.push(SOURCE_HOME);
-    else if (lower === "{fest}" || lower === "{static}") {
+    else if (lower === "{home}" || lower === "{heim}") out.push(SOURCE_HOME);
+    else if (lower === "{static}" || lower === "{fest}") {
       if (!allowStatic) return { from: [], error: t("ruleEditor.noStaticHere") };
       out.push(SOURCE_STATIC);
     } else if (isValidCidr4(p)) {
@@ -285,7 +285,7 @@ export function RuleSpecForm({
         <Input
           value={sources}
           onChange={(e) => setSources(e.target.value)}
-          placeholder={allowStatic ? "any, {heim}, {fest}, 192.0.2.5" : "any, {heim}, 192.0.2.5"}
+          placeholder={allowStatic ? "any, {home}, {static}, 192.0.2.5" : "any, {home}, 192.0.2.5"}
           className="font-mono"
           aria-invalid={touched && !!parsed.error}
         />

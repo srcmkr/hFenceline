@@ -1,3 +1,4 @@
+mod backup;
 mod secrets;
 #[cfg(target_os = "linux")]
 mod linux_tray;
@@ -90,6 +91,7 @@ pub fn run() {
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             if !started_hidden_arg() {
                 show_main(app.handle());
@@ -102,6 +104,8 @@ pub fn run() {
             quit,
             tray_backend,
             tray_update,
+            backup::backup_export,
+            backup::backup_import,
             secrets::secret_get,
             secrets::secret_set,
             secrets::secret_delete,

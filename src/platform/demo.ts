@@ -28,11 +28,11 @@ templates:
       - id: admin
         name: Admin von zu Hause
         rules:
-          - { protocol: all, from: ["{heim}"] }
+          - { protocol: all, from: ["{home}"] }
       - id: static
         name: Feste IPs
         rules:
-          - { protocol: all, from: ["{fest}"] }
+          - { protocol: all, from: ["{static}"] }
       - id: ping
         name: Ping
         optional: true
@@ -45,7 +45,7 @@ templates:
       - id: admin
         name: Admin von zu Hause
         rules:
-          - { protocol: all, from: ["{heim}"] }
+          - { protocol: all, from: ["{home}"] }
 
 customers:
   - id: privat

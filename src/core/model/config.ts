@@ -4,8 +4,12 @@ export const PROTOCOLS = ["tcp", "udp", "icmp", "esp", "gre", "all"] as const;
 export type Protocol = (typeof PROTOCOLS)[number];
 
 export const SOURCE_ANY = "any";
-export const SOURCE_HOME = "{heim}";
-export const SOURCE_STATIC = "{fest}";
+export const SOURCE_HOME = "{home}";
+export const SOURCE_STATIC = "{static}";
+
+// alte namen aus v0.1.0
+const LEGACY: Record<string, string> = { "{heim}": SOURCE_HOME, "{fest}": SOURCE_STATIC };
+const source = z.string().transform((s) => LEGACY[s] ?? s);
 
 const id = z
   .string()
@@ -16,7 +20,7 @@ const port = z.string().regex(/^\d{1,5}(-\d{1,5})?$/, "Port oder Bereich wie 102
 export const RuleSpecSchema = z.object({
   protocol: z.enum(PROTOCOLS),
   port: port.optional(),
-  from: z.array(z.string()).min(1),
+  from: z.array(source).min(1),
 });
 export type RuleSpec = z.infer<typeof RuleSpecSchema>;
 
@@ -46,7 +50,7 @@ export const ExtraRuleSchema = z.object({
   name: z.string().min(1),
   protocol: z.enum(PROTOCOLS),
   port: port.optional(),
-  from: z.array(z.string()).min(1),
+  from: z.array(source).min(1),
 });
 export type ExtraRule = z.infer<typeof ExtraRuleSchema>;
 

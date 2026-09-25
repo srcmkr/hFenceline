@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Check, ChevronDown, ChevronLeft, CircleCheck, CircleX, House, Loader2, Plus, RotateCcw } from "lucide-react";
+import { Check, ChevronDown, ChevronLeft, FileLock2, CircleCheck, CircleX, House, Loader2, Plus, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,8 @@ import { NewFirewallDialog } from "./dialogs/new-firewall-dialog";
 import { BlockEditor } from "./pages/templates";
 import { PlanWarnings, RuleDiff } from "./preview";
 import { Logo } from "./logo";
+import { ImportBackupDialog } from "./dialogs/backup-dialog";
+import { isDesktop } from "@/platform/desktop";
 import { errorText, useErrorToast } from "./errors";
 
 type Step = 1 | 2 | 3 | 4 | 5;
@@ -80,7 +82,7 @@ export function Wizard({ startStep, onFinish, onCancel }: { startStep: 1 | 3; on
             )}
           </div>
 
-          {step === 1 && <StepLanguage onNext={() => setStep(2)} />}
+          {step === 1 && <StepLanguage onNext={() => setStep(2)} onRestored={onFinish} />}
           {step === 2 && <StepTemplate onNext={() => setStep(3)} />}
           {step === 3 && (
             <StepProjects
@@ -132,7 +134,8 @@ export function Wizard({ startStep, onFinish, onCancel }: { startStep: 1 | 3; on
   );
 }
 
-function StepLanguage({ onNext }: { onNext: () => void }) {
+function StepLanguage({ onNext, onRestored }: { onNext: () => void; onRestored: () => void }) {
+  const [importOpen, setImportOpen] = useState(false);
   const { t } = useTranslation();
   const service = useService();
   const state = useServiceState();
@@ -190,12 +193,19 @@ function StepLanguage({ onNext }: { onNext: () => void }) {
         </Button>
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-2">
+        {isDesktop && (
+          <Button size="lg" variant="ghost" className="mr-auto" onClick={() => setImportOpen(true)}>
+            <FileLock2 className="size-4" />
+            {t("backup.fromBackup")}
+          </Button>
+        )}
         <Button size="lg" onClick={next} disabled={busy}>
           {busy && <Loader2 className="size-4 animate-spin" />}
           {t("common.next")}
         </Button>
       </div>
+      <ImportBackupDialog open={importOpen} onOpenChange={setImportOpen} onDone={onRestored} />
     </div>
   );
 }

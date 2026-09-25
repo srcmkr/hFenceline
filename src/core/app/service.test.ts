@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { FakeHetzner, server } from "../testing/fake-hetzner";
 import { MemoryFiles, MemorySecrets } from "../testing/memory";
 import { SecretStoreError } from "../ports";
+import { BackupError, readBackup } from "../backup";
 import type { Firewall, FirewallRule } from "../hetzner/types";
 import { AppService } from "./service";
 import { firewallKey } from "./overview";
@@ -272,5 +273,65 @@ describe("AppService", () => {
     api.projects.get("tok-web")!.firewalls = [];
     await svc.refreshProject(customerId, projectId);
     expect(svc.getState().overview!.firewalls[0]!.error).toMatchObject({ code: "not_found" });
+  });
+
+  describe("backup", () => {
+    const other = () => {
+      const f = new MemoryFiles();
+      const sec = new MemorySecrets();
+      const svc2 = new AppService(
+        { fetch: api.fetch, files: f, secrets: sec, now: () => new Date("2026-09-25T12:00:00Z") },
+        { client: { sleep: async () => {}, actionPollMs: 0 } },
+      );
+      return { f, sec, svc2 };
+    };
+
+    it("roundtrip auf neuen pc", async () => {
+      const { key } = await setupManaged();
+      await svc.applyFirewall(key);
+      const json = await svc.createBackup("0.1.0");
+      expect(readBackup(json).summary).toMatchObject({ customers: 1, projects: 1, tokens: 1, app: "0.1.0" });
+
+      const { f, sec, svc2 } = other();
+      await svc2.start();
+      expect(svc2.getState().phase).toBe("first-run");
+      await svc2.restoreBackup(json);
+      expect(svc2.getState().phase).toBe("ready");
+      expect(f.files.get("config.yaml")).toBe(files.files.get("config.yaml"));
+      expect(sec.values.get("hfenceline/privat/webserver")).toBe("tok-web");
+      expect(f.files.has("config.yaml.bak")).toBe(false);
+      svc2.stopHomeIpTimer();
+    });
+
+    it("ersetzt und sichert alte config", async () => {
+      await setupManaged();
+      const json = await svc.createBackup("0.1.0");
+      const { f, svc2 } = other();
+      await svc2.start();
+      await svc2.initConfig("en");
+      const old = f.files.get("config.yaml");
+      await svc2.restoreBackup(json);
+      expect(f.files.get("config.yaml.bak")).toBe(old);
+      expect(svc2.getState().config!.customers.map((c) => c.id)).toEqual(["privat"]);
+      svc2.stopHomeIpTimer();
+    });
+
+    it("nur tokens von projekten aus der config", async () => {
+      await setupManaged();
+      const payload = JSON.parse(await svc.createBackup("0.1.0"));
+      payload.tokens["login-keychain/fremd"] = "boese";
+      const { sec, svc2 } = other();
+      await svc2.start();
+      await svc2.restoreBackup(JSON.stringify(payload));
+      expect([...sec.values.keys()]).toEqual(["hfenceline/privat/webserver"]);
+      svc2.stopHomeIpTimer();
+    });
+
+    it("kaputtes backup", async () => {
+      expect(() => readBackup("nix")).toThrow(BackupError);
+      expect(() => readBackup(JSON.stringify({ format: "x" }))).toThrow(BackupError);
+      const bad = { format: "hfenceline-backup", version: 1, created: "", app: "", config: "version: 2", tokens: {} };
+      expect(() => readBackup(JSON.stringify(bad))).toThrow(/version/);
+    });
   });
 });

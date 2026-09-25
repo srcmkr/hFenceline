@@ -39,7 +39,7 @@ Wechselt deine Home-IP über Nacht, zeigt das Tray-Symbol rot. Ein Klick auf **H
 
 ## Warum hFenceline
 
-- **Home-IP per Klick.** hFenceline prüft die öffentliche IPv4 im Hintergrund und setzt sie auf Wunsch in allen Firewalls, die den Platzhalter `{heim}` nutzen.
+- **Home-IP per Klick.** hFenceline prüft die öffentliche IPv4 im Hintergrund und setzt sie auf Wunsch in allen Firewalls, die den Platzhalter `{home}` nutzen.
 - **Vorlagen statt Handarbeit.** Firewalls entstehen aus Bausteinen wie „Web öffentlich“ oder „Admin von zu Hause“. Eine geänderte Vorlage wirkt auf alle Firewalls, die sie nutzen.
 - **Ausnahmen pro Firewall.** Feste IPs, zuschaltbare Bausteine wie Ping und eigene Zusatzregeln - ohne die Vorlage zu verbiegen.
 - **Erst Vorschau, dann Schreiben.** Vor jeder Änderung holt hFenceline den Ist-Stand frisch von Hetzner und zeigt, welche Regeln hinzukommen und welche entfallen.
@@ -79,7 +79,7 @@ Wechselt deine Home-IP über Nacht, zeigt das Tray-Symbol rot. Ein Klick auf **H
 | Baustein | Regeln | Standard |
 | --- | --- | --- |
 | Web öffentlich | TCP 80 und 443 von überall | immer aktiv |
-| Admin von zu Hause | voller Zugriff von `{heim}` | immer aktiv |
+| Admin von zu Hause | voller Zugriff von `{home}` | immer aktiv |
 | Feste IPs | voller Zugriff von den festen IPs der jeweiligen Firewall | immer aktiv, anfangs leer |
 | Ping | ICMP von überall | zuschaltbar, standardmäßig aus |
 
@@ -91,6 +91,7 @@ hFenceline spricht direkt mit der Hetzner-Cloud-API. Es gibt keinen Server dazwi
 
 - **Tokens** liegen im Passwortspeicher des Betriebssystems (Linux Secret Service, Windows-Anmeldeinformationsverwaltung). Ohne Secret Service nur nach Zustimmung in `tokens.json` mit Rechten `600`.
 - **Konfiguration** liegt lesbar als `config.yaml` unter `~/.config/hfenceline/` bzw. `%APPDATA%\hfenceline\`, das Protokoll daneben als `audit.jsonl`. Beide enthalten keine Tokens.
+- **Backup.** Konfiguration und Tokens lassen sich als verschlüsselte Datei exportieren und auf einem anderen PC wieder importieren. Verschlüsselt wird mit einer Passphrase im [age](https://age-encryption.org)-Format (scrypt, ChaCha20-Poly1305), die Datei lässt sich notfalls auch mit `age -d` öffnen.
 - **Im Hintergrund wird nur gelesen.** Geschrieben wird bei Hetzner ausschließlich nach deinem Klick.
 - **Klare Kennzeichnung.** Eigene Regeln tragen das Präfix `hfl:` in der Beschreibung, verwaltete Firewalls das Label `managed-by=hfenceline`. Alles andere fasst hFenceline nicht ungefragt an.
 - **Keine Server-Zuweisung.** Welche Server eine Firewall schützt, entscheidest du weiter in der Hetzner-Konsole. hFenceline warnt nur bei ungeschützten Servern.
@@ -139,7 +140,7 @@ Voraussetzungen:
 - unter Linux zusätzlich:
 
 ```bash
-sudo apt install libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev build-essential curl file libssl-dev
+sudo apt install libwebkit2gtk-4.1-dev librsvg2-dev build-essential curl file libssl-dev
 ```
 
 Häufige Befehle:

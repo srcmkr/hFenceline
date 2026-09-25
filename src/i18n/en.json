@@ -59,7 +59,7 @@
     "dialogTitle": "Apply home IP",
     "targets_one": "{{count}} firewall",
     "targets_other": "{{count}} firewalls",
-    "noTargets": "No firewall uses a block with {heim}.",
+    "noTargets": "No firewall uses a block with {home}.",
     "apply": "Apply now",
     "retryFailed_one": "Retry failure",
     "retryFailed_other": "Retry {{count}} failures",
@@ -114,11 +114,11 @@
     "sources": "Sources",
     "protocol": "Protocol",
     "port": "Port",
-    "sourcesHint": "Comma separated: any, {heim}, IPv4/network",
-    "sourcesHintStatic": "Comma separated: any, {heim}, {fest}, IPv4/network",
+    "sourcesHint": "Comma separated: any, {home}, IPv4/network",
+    "sourcesHintStatic": "Comma separated: any, {home}, {static}, IPv4/network",
     "sourcesRequired": "Enter at least one source.",
     "invalidSource": "Invalid source: {{value}}",
-    "noStaticHere": "{fest} is not possible here.",
+    "noStaticHere": "{static} is not possible here.",
     "invalidPort": "Port 1-65535 or range (1024-5000)"
   },
   "preview": {
@@ -148,7 +148,7 @@
     },
     "no-home-ip": {
       "title": "Home IP unknown",
-      "text": "Home IP unknown, rules with {heim} are dropped."
+      "text": "Home IP unknown, rules with {home} are dropped."
     },
     "no-rules": {
       "title": "No inbound rule",
@@ -256,7 +256,7 @@
     "description": "Covered rules are replaced by blocks, the rest stays as foreign rules.",
     "template": "Template",
     "homeQuestion": "Which address is your home IP?",
-    "homeHint": "Gets replaced by {heim}, i.e. {{ip}}.",
+    "homeHint": "Gets replaced by {home}, i.e. {{ip}}.",
     "probablyOldHome": "probably old home IP",
     "currentHome": "current home IP",
     "noHome": "None of these",
@@ -470,5 +470,31 @@
     "latest": "Up to date",
     "available": "Update available: v{{version}}",
     "unknown": "Update check not possible"
+  },
+  "backup": {
+    "title": "Backup",
+    "hint": "Configuration and all tokens, encrypted with a passphrase (age). The log is not included.",
+    "export": "Export backup",
+    "import": "Import backup",
+    "desktopOnly": "Desktop app only",
+    "exportTitle": "Export backup",
+    "exportText": "Without the passphrase the backup cannot be restored. It is not stored anywhere.",
+    "passphrase": "Passphrase",
+    "passphraseRepeat": "Repeat passphrase",
+    "tooShort": "At least 12 characters",
+    "mismatch": "Does not match",
+    "saveAs": "Save as",
+    "saved": "Backup saved",
+    "importTitle": "Import backup",
+    "chooseFile": "Choose file",
+    "decrypt": "Decrypt",
+    "wrongPassphrase": "Wrong passphrase",
+    "invalidFile": "Not a valid backup file",
+    "summary": "{{customers}} customers, {{projects}} projects, {{tokens}} tokens",
+    "created": "Created {{date}} with v{{app}}",
+    "replaceWarning": "Replaces the current configuration. The previous one is saved as config.yaml.bak.",
+    "replace": "Replace",
+    "restored": "Backup restored",
+    "fromBackup": "Restore from backup"
   }
 }

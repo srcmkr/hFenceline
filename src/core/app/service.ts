@@ -13,6 +13,8 @@ import { suggestAssignment, type AssignResult } from "../plan/assign";
 import { ruleKey, sourcesToFrom } from "../plan/rules";
 import { hostCidr } from "../net/ip";
 import { fetchLatestRelease, type Release } from "../update";
+import { BACKUP_FORMAT, projectTokenKeys, readBackup, type BackupPayload } from "../backup";
+import { CONFIG_FILE } from "../store/config-store";
 import {
   buildOverview,
   firewallKey,
@@ -630,6 +632,34 @@ export class AppService {
       this.ports.secrets.backend().catch(() => "unknown"),
     ]);
     return { location, secrets };
+  }
+
+  async createBackup(app: string): Promise<string> {
+    const config = this.config();
+    const raw = await this.configStore.raw();
+    if (raw === null) throw new Error("keine konfiguration gespeichert");
+    const tokens: Record<string, string> = {};
+    for (const key of projectTokenKeys(config)) {
+      const t = await this.ports.secrets.get(key);
+      if (t) tokens[key] = t;
+    }
+    const payload: BackupPayload = { format: BACKUP_FORMAT, version: 1, created: this.now(), app, config: raw, tokens };
+    return JSON.stringify(payload);
+  }
+
+  // ersetzt konfiguration und tokens, alte config landet in config.yaml.bak
+  async restoreBackup(json: string, opts: { allowFile?: boolean } = {}): Promise<void> {
+    const { payload, config } = readBackup(json);
+    for (const key of projectTokenKeys(config)) {
+      const t = payload.tokens[key];
+      if (t) await this.ports.secrets.set(key, t, opts);
+    }
+    const old = await this.configStore.raw();
+    if (old !== null) await this.ports.files.write(`${CONFIG_FILE}.bak`, old);
+    await this.ports.files.write(CONFIG_FILE, payload.config);
+    this.set({ data: {}, pendingDrops: {} });
+    await this.start();
+    this.startHomeIpTimer();
   }
 
   latestRelease(repo: string): Promise<Release | null> {

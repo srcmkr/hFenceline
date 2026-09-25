@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FolderOpen, Globe, KeyRound, Power, Timer } from "lucide-react";
+import { FileLock2, FolderOpen, Globe, KeyRound, Power, Timer } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ExportBackupDialog, ImportBackupDialog } from "../dialogs/backup-dialog";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -17,6 +19,8 @@ export function SettingsPage({ location, secretsBackend }: { location: string; s
   const state = useServiceState();
   const config = state.config!;
   const [auto, setAuto] = useState<boolean | null>(null);
+  const [exportOpen, setExportOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const [interval, setIntervalValue] = useState(String(config.homeip.check_interval_minutes ?? DEFAULT_CHECK_INTERVAL_MINUTES));
 
   useEffect(() => {
@@ -86,6 +90,23 @@ export function SettingsPage({ location, secretsBackend }: { location: string; s
           </Row>
         </div>
       </Section>
+
+      <Section title={t("backup.title")}>
+        <div className="flex flex-wrap items-center gap-3 px-4 py-3.5">
+          <span className="text-muted-foreground [&_svg]:size-4">
+            <FileLock2 />
+          </span>
+          <div className="min-w-0 flex-1 text-xs text-muted-foreground">{isDesktop ? t("backup.hint") : t("backup.desktopOnly")}</div>
+          <Button variant="outline" size="sm" disabled={!isDesktop} onClick={() => setImportOpen(true)}>
+            {t("backup.import")}
+          </Button>
+          <Button size="sm" disabled={!isDesktop} onClick={() => setExportOpen(true)}>
+            {t("backup.export")}
+          </Button>
+        </div>
+      </Section>
+      <ExportBackupDialog open={exportOpen} onOpenChange={setExportOpen} />
+      <ImportBackupDialog open={importOpen} onOpenChange={setImportOpen} />
 
       <p className="text-xs text-muted-foreground">
         hFenceline · {t("app.license")} · {t("app.description")}
