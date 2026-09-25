@@ -1,0 +1,474 @@
+{
+  "app": {
+    "tagline": "Hetzner-Cloud-Firewalls",
+    "description": "Hetzner-Cloud-Firewalls einheitlich halten und die Home-IP aktuell.",
+    "license": "MIT-Lizenz",
+    "demoBanner": "Demo - Tokens: demo-privat-web, demo-x-shop",
+    "browserBanner": "Browser-Modus (Dev), Tokens im localStorage"
+  },
+  "nav": {
+    "dashboard": "Übersicht",
+    "templates": "Vorlagen",
+    "log": "Protokoll",
+    "settings": "Einstellungen",
+    "projects": "Kunden & Projekte",
+    "project": "Projekt",
+    "firewall": "Firewall",
+    "addProject": "Projekt hinzufügen",
+    "noProjects": "Noch keine Projekte.",
+    "noFirewalls": "Keine verwalteten Firewalls",
+    "expand": "Aufklappen",
+    "collapse": "Zuklappen",
+    "github": "GitHub",
+    "reportIssue": "Problem melden"
+  },
+  "state": {
+    "ok": "passt",
+    "drifted": "abweichend",
+    "home-ip": "alte Home-IP",
+    "foreign": "fremde Regeln",
+    "unreachable": "nicht erreichbar",
+    "unknown": "unbekannt"
+  },
+  "common": {
+    "add": "Hinzufügen",
+    "back": "Zurück",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "delete": "Löschen",
+    "discard": "Verwerfen",
+    "done": "Fertig",
+    "loading": "Lädt...",
+    "more": "Weitere Aktionen",
+    "next": "Weiter",
+    "remove": "Entfernen",
+    "retry": "Wiederholen",
+    "save": "Speichern"
+  },
+  "actions": {
+    "checkStatus": "Status prüfen"
+  },
+  "homeip": {
+    "label": "Home-IP",
+    "checkedAt": "geprüft um {{time}}",
+    "checkFailed": "Prüfung fehlgeschlagen",
+    "applyShort_one": "Übernehmen · {{count}} Firewall",
+    "applyShort_other": "Übernehmen · {{count}} Firewalls",
+    "applyLong_one": "{{ip}} → {{count}} Firewall übernehmen",
+    "applyLong_other": "{{ip}} → {{count}} Firewalls übernehmen",
+    "dialogTitle": "Home-IP übernehmen",
+    "targets_one": "{{count}} Firewall",
+    "targets_other": "{{count}} Firewalls",
+    "noTargets": "Keine Firewall nutzt den Baustein mit {heim}.",
+    "apply": "Jetzt übernehmen",
+    "retryFailed_one": "Fehlschlag wiederholen",
+    "retryFailed_other": "{{count}} Fehlschläge wiederholen",
+    "unchanged": "war schon aktuell",
+    "updated": "aktualisiert"
+  },
+  "dashboard": {
+    "allGood": "Alles in Ordnung",
+    "attention": "Einiges braucht Aufmerksamkeit",
+    "errors": "Nicht alles ist erreichbar",
+    "empty": "Willkommen bei hFenceline",
+    "homeChanged_one": "Home-IP geändert, {{count}} Firewall veraltet",
+    "homeChanged_other": "Home-IP geändert, {{count}} Firewalls veraltet",
+    "summary": "Verwaltete Firewalls: {{firewalls}} · Projekte: {{projects}}",
+    "todo": "Zu erledigen",
+    "stat": {
+      "managed": "Verwaltet",
+      "unprotected": "Server ohne Firewall"
+    }
+  },
+  "rules": {
+    "anywhere": "überall",
+    "home": "Home-IP",
+    "static": "feste IPs",
+    "from": "von",
+    "fullAccess": "alles",
+    "allPorts": "alle Ports"
+  },
+  "blocks": {
+    "alwaysOn": "immer aktiv",
+    "alwaysOnHint": "Gilt immer. Pro Firewall schaltbar nur mit \"zuschaltbar\" in der Vorlage."
+  },
+  "staticIps": {
+    "title": "Feste IPs",
+    "hint": "Bekommen immer vollen Zugriff. Die Notiz steht nur in hFenceline.",
+    "empty": "Keine festen IPs.",
+    "notePlaceholder": "Notiz, z. B. Büro Kunde X",
+    "invalid": "Keine gültige IPv4-Adresse oder kein gültiges Netz",
+    "hostBits": "Netz beginnt bei {{network}}",
+    "duplicate": "Schon vorhanden"
+  },
+  "extraRules": {
+    "title": "Zusatzregeln",
+    "hint": "Regeln, die es nur bei dieser Firewall gibt.",
+    "empty": "Keine Zusatzregeln.",
+    "add": "Zusatzregel hinzufügen"
+  },
+  "ruleEditor": {
+    "name": "Name",
+    "namePlaceholder": "z. B. Monitoring",
+    "nameRequired": "Bitte einen Namen angeben.",
+    "sources": "Quellen",
+    "protocol": "Protokoll",
+    "port": "Port",
+    "sourcesHint": "Komma-getrennt: any, {heim}, IPv4/Netz",
+    "sourcesHintStatic": "Komma-getrennt: any, {heim}, {fest}, IPv4/Netz",
+    "sourcesRequired": "Mindestens eine Quelle angeben.",
+    "invalidSource": "Ungültige Quelle: {{value}}",
+    "noStaticHere": "{fest} ist hier nicht möglich.",
+    "invalidPort": "Port 1-65535 oder Bereich (1024-5000)"
+  },
+  "preview": {
+    "title": "Vorschau: {{name}}",
+    "description": "Ist-Stand frisch von Hetzner.",
+    "noChanges": "Keine Änderungen",
+    "added": "kommt hinzu",
+    "removed": "entfällt",
+    "addedCount_one": "+{{count}} Regel",
+    "addedCount_other": "+{{count}} Regeln",
+    "removedCount_one": "−{{count}} Regel",
+    "removedCount_other": "−{{count}} Regeln",
+    "unchangedCount_one": "{{count}} unveränderte Regel",
+    "unchangedCount_other": "{{count}} unveränderte Regeln",
+    "confirm_one": "{{count}} Änderung übernehmen",
+    "confirm_other": "{{count}} Änderungen übernehmen",
+    "confirmNoChanges": "Übernehmen"
+  },
+  "warnings": {
+    "lockout": {
+      "title": "Achtung: Aussperren möglich",
+      "text": "Keine Regel erlaubt danach noch Zugriff von deiner Home-IP."
+    },
+    "rule-limit": {
+      "title": "Mehr als 500 wirksame Regeln",
+      "text": "Hetzner erlaubt max. 500 Regeln (Regeln x Adressen)."
+    },
+    "no-home-ip": {
+      "title": "Home-IP unbekannt",
+      "text": "Home-IP unbekannt, Regeln mit {heim} fallen weg."
+    },
+    "no-rules": {
+      "title": "Keine eingehende Regel",
+      "text": "Ohne eingehende Regel blockt Hetzner alles."
+    }
+  },
+  "apply": {
+    "success": "{{name}} übernommen",
+    "failed": "{{name}} konnte nicht übernommen werden",
+    "unchanged": "Ist und Soll waren bereits gleich.",
+    "summary": "+{{added}} / −{{removed}} Regeln"
+  },
+  "firewall": {
+    "apply": "Übernehmen",
+    "applyTarget": "Soll übernehmen",
+    "adoptActual": "Ist ins Soll übernehmen",
+    "adoptActualTitle": "Ist ins Soll übernehmen?",
+    "adoptActualText": "Stand von Hetzner als Ausnahmen speichern. Bei Hetzner ändert sich nichts.",
+    "openConsole": "In Hetzner-Konsole öffnen",
+    "unmanage": "Nicht mehr verwalten",
+    "unmanageTitle": "{{name}} nicht mehr verwalten?",
+    "unmanageText": "Entfernt die Firewall aus hFenceline und das Label bei Hetzner. Regeln bleiben.",
+    "template": "Vorlage und Bausteine",
+    "templateHint": "Zuschaltbare Bausteine lassen sich pro Firewall an- und abschalten.",
+    "sync": "Abgleich",
+    "syncOk": "Ist bei Hetzner entspricht dem Soll.",
+    "syncDiff": "Ist bei Hetzner weicht vom Soll ab.",
+    "inSync": "Ist = Soll"
+  },
+  "foreign": {
+    "title": "Fremde Regeln",
+    "hint": "Regeln ohne hfl:-Kennung, bleiben standardmäßig erhalten.",
+    "empty": "Keine fremden Regeln.",
+    "keep": "Behalten",
+    "adopt": "Übernehmen",
+    "drop": "Entfernen"
+  },
+  "servers": {
+    "title": "Server",
+    "hint": "Server zuweisen geht nur in der Hetzner-Konsole.",
+    "protected": "Geschützte Server",
+    "protectedHint": "Direkt zugewiesen oder über Label-Selektor.",
+    "noneProtected": "Diese Firewall schützt noch keinen Server.",
+    "none": "Keine Server in diesem Projekt.",
+    "name": "Name",
+    "ip": "IPv4",
+    "firewalls": "Firewalls",
+    "noFirewall": "keine Firewall",
+    "notManaged": "nicht verwaltet",
+    "viaLabel": "über Label",
+    "count_one": "{{count}} Server",
+    "count_other": "{{count}} Server",
+    "unprotectedTitle_one": "{{count}} Server ohne Firewall",
+    "unprotectedTitle_other": "{{count}} Server ohne Firewall",
+    "unprotectedText": "Ungefiltert aus dem Internet erreichbar. Firewall in der Konsole zuweisen:",
+    "onlyUnmanagedTitle_one": "{{count}} Server nur mit nicht verwalteter Firewall",
+    "onlyUnmanagedTitle_other": "{{count}} Server nur mit nicht verwalteten Firewalls",
+    "onlyUnmanagedText": "Betroffen: {{names}}"
+  },
+  "project": {
+    "customer": "Kunde",
+    "newCustomer": "Neuer Kunde",
+    "customerName": "Name des Kunden",
+    "customerPlaceholder": "z. B. Privat oder Kunde X",
+    "name": "Projekt",
+    "namePlaceholder": "Name wie in der Hetzner-Konsole",
+    "consoleId": "Projekt-ID in der Konsole (optional, für Links)",
+    "add": "Projekt hinzufügen",
+    "addTitle": "Projekt hinzufügen",
+    "addDescription": "Ein Token gilt immer für genau ein Hetzner-Projekt.",
+    "newFirewall": "Neue Firewall",
+    "managed": "Verwaltete Firewalls",
+    "managedHint": "Firewalls mit Vorlage in hFenceline.",
+    "noManaged": "Noch keine Firewall wird verwaltet.",
+    "unmanaged": "Nicht verwaltete Firewalls",
+    "unmanagedHint": "Bei Hetzner vorhanden, aber nicht in hFenceline.",
+    "noUnmanaged": "Alle Firewalls werden verwaltet.",
+    "manage": "Verwalten",
+    "rulesCount_one": "{{count}} Regel",
+    "rulesCount_other": "{{count}} Regeln",
+    "firewallsCount_one": "{{count}} Firewall",
+    "firewallsCount_other": "{{count}} Firewalls",
+    "labeledButUnknown": "trägt das hFenceline-Label",
+    "remove": "Projekt entfernen",
+    "removeTitle": "{{name}} entfernen?",
+    "removeText": "Entfernt Projekt und Token aus hFenceline. Bei Hetzner ändert sich nichts."
+  },
+  "token": {
+    "label": "API-Token (Lesen & Schreiben)",
+    "hint": "Konsole > Projekt > Sicherheit > API-Tokens. Wird im Keyring gespeichert.",
+    "check": "Prüfen",
+    "checkAndSave": "Prüfen und speichern",
+    "ok": "Token gültig, Schreiben erlaubt.",
+    "readOnly": "Token gültig, aber nur zum Lesen. hFenceline kann damit nichts ändern.",
+    "invalid": "Token ungültig.",
+    "change": "Token ändern",
+    "changeTitle": "Token ändern",
+    "changeDescription": "Das neue Token wird geprüft und ersetzt das alte im Passwortspeicher.",
+    "noKeyringTitle": "Kein Passwortspeicher gefunden",
+    "noKeyringText": "Kein Secret Service gefunden (GNOME Keyring/KWallet). Token stattdessen in einer Datei mit Rechten 600 speichern?",
+    "useFile": "In Datei speichern"
+  },
+  "manage": {
+    "title": "{{name}} verwalten",
+    "description": "Abgedeckte Regeln werden durch Bausteine ersetzt, der Rest bleibt als fremde Regel.",
+    "template": "Vorlage",
+    "homeQuestion": "Welche Adresse ist deine Home-IP?",
+    "homeHint": "Wird durch {heim} ersetzt, also durch {{ip}}.",
+    "probablyOldHome": "vermutlich alte Home-IP",
+    "currentHome": "aktuelle Home-IP",
+    "noHome": "Keine davon",
+    "blocks": "Bausteine",
+    "foreign_one": "{{count}} fremde Regel bleibt",
+    "foreign_other": "{{count}} fremde Regeln bleiben",
+    "preview": "Vorschau",
+    "saveOnly": "Nur speichern",
+    "saveAndApply": "Speichern und übernehmen",
+    "saved": "{{name}} wird jetzt verwaltet",
+    "noTemplate": "Bitte zuerst eine Vorlage anlegen.",
+    "homeUnclear": "Nicht eindeutig. Ohne Auswahl bleiben alle als feste IPs offen."
+  },
+  "newFirewall": {
+    "title": "Neue Firewall",
+    "description": "Legt eine Firewall nach Vorlage im Projekt {{project}} an.",
+    "name": "Name",
+    "nameExists": "Eine Firewall mit diesem Namen gibt es im Projekt schon.",
+    "create": "Anlegen",
+    "created": "{{name}} angelegt",
+    "assignHint": "Server weist du in der Hetzner-Konsole zu.",
+    "labelHint": "Bekommt das Label managed-by=hfenceline. Server werden nicht zugewiesen."
+  },
+  "templates": {
+    "title": "Vorlagen",
+    "new": "Neue Vorlage",
+    "newName": "Neue Vorlage",
+    "copySuffix": "(Kopie)",
+    "duplicate": "Duplizieren",
+    "name": "Name der Vorlage",
+    "inUse": "Wird noch von Firewalls genutzt",
+    "none": "Keine Vorlage vorhanden.",
+    "blocksCount_one": "{{count}} Baustein",
+    "blocksCount_other": "{{count}} Bausteine",
+    "usedBy_one": "{{count}} Firewall",
+    "usedBy_other": "{{count}} Firewalls",
+    "optional": "zuschaltbar",
+    "defaultOn": "standardmäßig an",
+    "idHint": "Kennung bei Hetzner; bleibt fest.",
+    "newBlock": "Neuer Baustein",
+    "addBlock": "Baustein hinzufügen",
+    "addRule": "Regel hinzufügen",
+    "noRules": "Noch keine Regel.",
+    "unsaved": "Ungespeicherte Änderungen",
+    "deleteTitle": "Vorlage {{name}} löschen?",
+    "deleteText": "Die Vorlage wird aus hFenceline entfernt.",
+    "saveTitle": "{{name}} speichern",
+    "saveText_one": "Betrifft {{count}} Firewall. Ausnahmen bleiben.",
+    "saveText_other": "Betrifft {{count}} Firewalls. Ausnahmen bleiben.",
+    "changes_one": "{{count}} Änderung",
+    "changes_other": "{{count}} Änderungen",
+    "notLoaded": "nicht geladen",
+    "saveOnly": "Nur speichern",
+    "saveAndApply_one": "Speichern und bei {{count}} Firewall übernehmen",
+    "saveAndApply_other": "Speichern und bei {{count}} Firewalls übernehmen",
+    "saved": "Vorlage gespeichert",
+    "applied_one": "Bei {{count}} Firewall übernommen",
+    "applied_other": "Bei {{count}} Firewalls übernommen",
+    "applyFailed_one": "{{count}} Firewall konnte nicht übernommen werden",
+    "applyFailed_other": "{{count}} Firewalls konnten nicht übernommen werden",
+    "optionalHelp": {
+      "title": "Zuschaltbar",
+      "text": "Pro Firewall an- und abschaltbar. Sonst gilt der Baustein immer."
+    },
+    "defaultOnHelp": {
+      "title": "Standardmäßig an",
+      "text": "Gilt für Firewalls ohne eigene Einstellung."
+    }
+  },
+  "log": {
+    "title": "Protokoll",
+    "empty": "Noch nichts geschrieben.",
+    "oldLabels": "Labels vorher",
+    "newLabels": "Labels nachher",
+    "action": {
+      "set_rules": "Regeln gesetzt",
+      "create": "Angelegt",
+      "labels": "Labels"
+    },
+    "trigger": {
+      "home-ip": "Home-IP",
+      "apply": "Übernehmen",
+      "import": "Einlesen",
+      "create": "Neue Firewall"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "general": "Allgemein",
+    "language": "Sprache",
+    "languageHint": "Oberfläche, Tray und Meldungen",
+    "autostart": "Mit dem System starten",
+    "autostartHint": "Startet nur im Tray",
+    "desktopOnly": "Nur in der Desktop-App",
+    "interval": "Home-IP prüfen alle",
+    "intervalHint": "Im Hintergrund wird nur gelesen, nie geschrieben.",
+    "minutes": "Minuten",
+    "storage": "Speicherorte",
+    "configFile": "Konfiguration",
+    "configFileHint": "config.yaml und audit.jsonl, ohne Tokens",
+    "tokens": "Tokens",
+    "tokenBackend": {
+      "keyring": "Im Passwortspeicher des Betriebssystems",
+      "file": "In einer Datei mit Rechten 600 (kein Passwortspeicher gefunden)",
+      "memory": "Nur im Arbeitsspeicher (Demo/Browser)",
+      "unknown": "Unbekannt"
+    }
+  },
+  "configError": {
+    "title": "Konfiguration fehlerhaft",
+    "text": "{{location}} konnte nicht gelesen werden. Datei korrigieren und neu laden.",
+    "reload": "Neu laden"
+  },
+  "errors": {
+    "unexpected": "Unerwarteter Fehler",
+    "config": "Konfiguration ungültig",
+    "unknownTemplate": "Vorlage fehlt",
+    "hetzner": {
+      "unauthorized": "Token ungültig oder abgelaufen",
+      "forbidden": "Token darf das nicht (nur Lesen?)",
+      "not_found": "Bei Hetzner nicht gefunden",
+      "network": "Hetzner nicht erreichbar",
+      "timeout": "Zeitüberschreitung bei Hetzner",
+      "rate_limit_exceeded": "Zu viele Anfragen an Hetzner",
+      "invalid_input": "Hetzner lehnt die Eingabe ab",
+      "uniqueness_error": "Name schon vergeben",
+      "invalid_response": "Unerwartete Antwort von Hetzner",
+      "action_failed": "Hetzner meldet einen Fehler",
+      "server_error": "Störung bei Hetzner",
+      "other": "Fehler bei Hetzner"
+    },
+    "homeip": {
+      "network": "IP-Dienst nicht erreichbar",
+      "http": "IP-Dienst meldet einen Fehler",
+      "invalid": "IP-Dienst liefert keine gültige IPv4"
+    },
+    "secrets": {
+      "no-keyring": "Kein Passwortspeicher gefunden",
+      "failed": "Passwortspeicher meldet einen Fehler"
+    }
+  },
+  "tray": {
+    "applyHomeIp_one": "Home-IP übernehmen ({{ip}} → {{count}} Firewall)",
+    "applyHomeIp_other": "Home-IP übernehmen ({{ip}} → {{count}} Firewalls)",
+    "applyHomeIpUnknown": "Home-IP übernehmen (IP unbekannt)",
+    "check": "Status prüfen",
+    "open": "hFenceline öffnen",
+    "quit": "Beenden",
+    "tooltip": {
+      "green": "alles passt",
+      "yellow": "Abweichung oder ungeschützter Server",
+      "red": "Home-IP geändert oder Fehler"
+    }
+  },
+  "wizard": {
+    "finish": "Fertig",
+    "step1": {
+      "short": "Sprache",
+      "title": "Willkommen bei hFenceline",
+      "text": "Sprache wählen.",
+      "homeIp": "Deine Home-IP",
+      "recheck": "Neu ermitteln"
+    },
+    "step2": {
+      "short": "Vorlage",
+      "title": "Vorlage prüfen",
+      "text": "Das ist die Standardvorlage. Passe die Bausteine an, wenn nötig.",
+      "later": "Später unter Vorlagen änderbar."
+    },
+    "step3": {
+      "short": "Projekte",
+      "title": "Kunden und Projekte",
+      "text": "Pro Hetzner-Projekt ein Token (Lesen & Schreiben).",
+      "first": "Erstes Projekt",
+      "another": "Weiteres Projekt"
+    },
+    "step4": {
+      "short": "Firewalls",
+      "title": "Firewalls einlesen",
+      "text": "Vorlage wählen oder nicht verwalten.",
+      "manageWith": "Mit {{name}} verwalten",
+      "dontManage": "Nicht verwalten",
+      "details": "Details",
+      "summary": "{{covered}} Regeln durch Bausteine ersetzt · {{static}} feste IPs · {{foreign}} fremd",
+      "homeFound": "Home-IP {{ip}}",
+      "noFirewalls": "Noch keine Firewall in diesem Projekt. Lege eine nach Vorlage an.",
+      "allManaged": "Alle Firewalls dieses Projekts werden schon verwaltet.",
+      "toPreview_one": "Weiter zur Vorschau ({{count}} Firewall)",
+      "toPreview_other": "Weiter zur Vorschau ({{count}} Firewalls)",
+      "homeUnclear": "Home-IP unklar, bitte in Details wählen"
+    },
+    "step5": {
+      "short": "Vorschau",
+      "title": "Vorschau und Übernehmen",
+      "text": "Geschrieben wird erst mit Übernehmen.",
+      "nothing": "Keine Firewall ausgewählt.",
+      "skip": "Ohne Übernehmen beenden",
+      "apply_one": "{{count}} Firewall übernehmen",
+      "apply_other": "{{count}} Firewalls übernehmen"
+    }
+  },
+  "licenses": {
+    "title": "Lizenzen",
+    "own": "hFenceline steht unter der MIT-Lizenz.",
+    "thirdParty": "Enthaltene Software",
+    "search": "Suchen",
+    "missing": "Lizenzliste fehlt (pnpm licenses).",
+    "system": "Das AppImage bringt zusätzlich GTK, WebKitGTK und weitere Systembibliotheken mit (LGPL-2.1+). Quellen: gtk.org, webkitgtk.org."
+  },
+  "update": {
+    "latest": "Aktuelle Version",
+    "available": "Update verfügbar: v{{version}}",
+    "unknown": "Update-Prüfung nicht möglich"
+  }
+}

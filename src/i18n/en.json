@@ -1,0 +1,474 @@
+{
+  "app": {
+    "tagline": "Hetzner Cloud firewalls",
+    "description": "Keep your Hetzner Cloud firewalls consistent and your home IP up to date.",
+    "license": "MIT license",
+    "demoBanner": "Demo - tokens: demo-privat-web, demo-x-shop",
+    "browserBanner": "Browser mode (dev), tokens in localStorage"
+  },
+  "nav": {
+    "dashboard": "Overview",
+    "templates": "Templates",
+    "log": "Log",
+    "settings": "Settings",
+    "projects": "Customers & projects",
+    "project": "Project",
+    "firewall": "Firewall",
+    "addProject": "Add project",
+    "noProjects": "No projects yet.",
+    "noFirewalls": "No managed firewalls",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "github": "GitHub",
+    "reportIssue": "Report issue"
+  },
+  "state": {
+    "ok": "in sync",
+    "drifted": "drifted",
+    "home-ip": "old home IP",
+    "foreign": "foreign rules",
+    "unreachable": "unreachable",
+    "unknown": "unknown"
+  },
+  "common": {
+    "add": "Add",
+    "back": "Back",
+    "cancel": "Cancel",
+    "close": "Close",
+    "delete": "Delete",
+    "discard": "Discard",
+    "done": "Done",
+    "loading": "Loading...",
+    "more": "More actions",
+    "next": "Next",
+    "remove": "Remove",
+    "retry": "Retry",
+    "save": "Save"
+  },
+  "actions": {
+    "checkStatus": "Check status"
+  },
+  "homeip": {
+    "label": "Home IP",
+    "checkedAt": "checked at {{time}}",
+    "checkFailed": "check failed",
+    "applyShort_one": "Apply · {{count}} firewall",
+    "applyShort_other": "Apply · {{count}} firewalls",
+    "applyLong_one": "Apply {{ip}} → {{count}} firewall",
+    "applyLong_other": "Apply {{ip}} → {{count}} firewalls",
+    "dialogTitle": "Apply home IP",
+    "targets_one": "{{count}} firewall",
+    "targets_other": "{{count}} firewalls",
+    "noTargets": "No firewall uses a block with {heim}.",
+    "apply": "Apply now",
+    "retryFailed_one": "Retry failure",
+    "retryFailed_other": "Retry {{count}} failures",
+    "unchanged": "already up to date",
+    "updated": "updated"
+  },
+  "dashboard": {
+    "allGood": "All good",
+    "attention": "Some things need attention",
+    "errors": "Not everything is reachable",
+    "empty": "Welcome to hFenceline",
+    "homeChanged_one": "Home IP changed, {{count}} firewall outdated",
+    "homeChanged_other": "Home IP changed, {{count}} firewalls outdated",
+    "summary": "Managed firewalls: {{firewalls}} · projects: {{projects}}",
+    "todo": "To do",
+    "stat": {
+      "managed": "Managed",
+      "unprotected": "Servers without firewall"
+    }
+  },
+  "rules": {
+    "anywhere": "anywhere",
+    "home": "home IP",
+    "static": "static IPs",
+    "from": "from",
+    "fullAccess": "all",
+    "allPorts": "all ports"
+  },
+  "blocks": {
+    "alwaysOn": "always on",
+    "alwaysOnHint": "Always applies. Mark it \"optional\" in the template to switch it per firewall."
+  },
+  "staticIps": {
+    "title": "Static IPs",
+    "hint": "Always get full access. The note is kept in hFenceline only.",
+    "empty": "No static IPs.",
+    "notePlaceholder": "Note, e.g. office customer X",
+    "invalid": "Not a valid IPv4 address or network",
+    "hostBits": "Network starts at {{network}}",
+    "duplicate": "Already present"
+  },
+  "extraRules": {
+    "title": "Extra rules",
+    "hint": "Rules that exist only on this firewall.",
+    "empty": "No extra rules.",
+    "add": "Add extra rule"
+  },
+  "ruleEditor": {
+    "name": "Name",
+    "namePlaceholder": "e.g. Monitoring",
+    "nameRequired": "Please enter a name.",
+    "sources": "Sources",
+    "protocol": "Protocol",
+    "port": "Port",
+    "sourcesHint": "Comma separated: any, {heim}, IPv4/network",
+    "sourcesHintStatic": "Comma separated: any, {heim}, {fest}, IPv4/network",
+    "sourcesRequired": "Enter at least one source.",
+    "invalidSource": "Invalid source: {{value}}",
+    "noStaticHere": "{fest} is not possible here.",
+    "invalidPort": "Port 1-65535 or range (1024-5000)"
+  },
+  "preview": {
+    "title": "Preview: {{name}}",
+    "description": "Current state freshly read from Hetzner.",
+    "noChanges": "No changes",
+    "added": "added",
+    "removed": "removed",
+    "addedCount_one": "+{{count}} rule",
+    "addedCount_other": "+{{count}} rules",
+    "removedCount_one": "−{{count}} rule",
+    "removedCount_other": "−{{count}} rules",
+    "unchangedCount_one": "{{count}} unchanged rule",
+    "unchangedCount_other": "{{count}} unchanged rules",
+    "confirm_one": "Apply {{count}} change",
+    "confirm_other": "Apply {{count}} changes",
+    "confirmNoChanges": "Apply"
+  },
+  "warnings": {
+    "lockout": {
+      "title": "Warning: possible lockout",
+      "text": "No rule will allow access from your home IP afterwards."
+    },
+    "rule-limit": {
+      "title": "More than 500 effective rules",
+      "text": "Hetzner allows max. 500 rules (rules x addresses)."
+    },
+    "no-home-ip": {
+      "title": "Home IP unknown",
+      "text": "Home IP unknown, rules with {heim} are dropped."
+    },
+    "no-rules": {
+      "title": "No inbound rule",
+      "text": "Without inbound rules Hetzner blocks everything."
+    }
+  },
+  "apply": {
+    "success": "{{name}} applied",
+    "failed": "{{name}} could not be applied",
+    "unchanged": "Current state already matched the target.",
+    "summary": "+{{added}} / −{{removed}} rules"
+  },
+  "firewall": {
+    "apply": "Apply",
+    "applyTarget": "Apply target",
+    "adoptActual": "Adopt current state",
+    "adoptActualTitle": "Adopt current state?",
+    "adoptActualText": "Save the Hetzner state as exceptions. Nothing changes at Hetzner.",
+    "openConsole": "Open in Hetzner Console",
+    "unmanage": "Stop managing",
+    "unmanageTitle": "Stop managing {{name}}?",
+    "unmanageText": "Removes the firewall from hFenceline and the label at Hetzner. Rules stay.",
+    "template": "Template and blocks",
+    "templateHint": "Optional blocks can be switched on and off per firewall.",
+    "sync": "Sync",
+    "syncOk": "Hetzner matches the target.",
+    "syncDiff": "Hetzner differs from the target.",
+    "inSync": "Current = target"
+  },
+  "foreign": {
+    "title": "Foreign rules",
+    "hint": "Rules without hfl: tag, kept by default.",
+    "empty": "No foreign rules.",
+    "keep": "Keep",
+    "adopt": "Adopt",
+    "drop": "Remove"
+  },
+  "servers": {
+    "title": "Servers",
+    "hint": "Assigning servers only works in the Hetzner Console.",
+    "protected": "Protected servers",
+    "protectedHint": "Assigned directly or via label selector.",
+    "noneProtected": "This firewall does not protect any server yet.",
+    "none": "No servers in this project.",
+    "name": "Name",
+    "ip": "IPv4",
+    "firewalls": "Firewalls",
+    "noFirewall": "no firewall",
+    "notManaged": "not managed",
+    "viaLabel": "via label",
+    "count_one": "{{count}} server",
+    "count_other": "{{count}} servers",
+    "unprotectedTitle_one": "{{count}} server without firewall",
+    "unprotectedTitle_other": "{{count}} servers without firewall",
+    "unprotectedText": "Reachable from the internet without filtering. Assign a firewall in the console:",
+    "onlyUnmanagedTitle_one": "{{count}} server with unmanaged firewalls only",
+    "onlyUnmanagedTitle_other": "{{count}} servers with unmanaged firewalls only",
+    "onlyUnmanagedText": "Affected: {{names}}"
+  },
+  "project": {
+    "customer": "Customer",
+    "newCustomer": "New customer",
+    "customerName": "Customer name",
+    "customerPlaceholder": "e.g. Private or Customer X",
+    "name": "Project",
+    "namePlaceholder": "Name as in the Hetzner Console",
+    "consoleId": "Project ID in the console (optional, for links)",
+    "add": "Add project",
+    "addTitle": "Add project",
+    "addDescription": "A token always belongs to exactly one Hetzner project.",
+    "newFirewall": "New firewall",
+    "managed": "Managed firewalls",
+    "managedHint": "Firewalls with a template in hFenceline.",
+    "noManaged": "No firewall is managed yet.",
+    "unmanaged": "Unmanaged firewalls",
+    "unmanagedHint": "Present at Hetzner but not in hFenceline.",
+    "noUnmanaged": "All firewalls are managed.",
+    "manage": "Manage",
+    "rulesCount_one": "{{count}} rule",
+    "rulesCount_other": "{{count}} rules",
+    "firewallsCount_one": "{{count}} firewall",
+    "firewallsCount_other": "{{count}} firewalls",
+    "labeledButUnknown": "carries the hFenceline label",
+    "remove": "Remove project",
+    "removeTitle": "Remove {{name}}?",
+    "removeText": "Removes project and token from hFenceline. Nothing changes at Hetzner."
+  },
+  "token": {
+    "label": "API token (read & write)",
+    "hint": "Console > project > Security > API tokens. Stored in the keyring.",
+    "check": "Check",
+    "checkAndSave": "Check and save",
+    "ok": "Token valid, write access granted.",
+    "readOnly": "Token valid but read-only. hFenceline cannot change anything with it.",
+    "invalid": "Token invalid.",
+    "change": "Change token",
+    "changeTitle": "Change token",
+    "changeDescription": "The new token is checked and replaces the old one in the password store.",
+    "noKeyringTitle": "No password store found",
+    "noKeyringText": "No Secret Service found (GNOME Keyring/KWallet). Store the token in a file with permissions 600 instead?",
+    "useFile": "Store in file"
+  },
+  "manage": {
+    "title": "Manage {{name}}",
+    "description": "Covered rules are replaced by blocks, the rest stays as foreign rules.",
+    "template": "Template",
+    "homeQuestion": "Which address is your home IP?",
+    "homeHint": "Gets replaced by {heim}, i.e. {{ip}}.",
+    "probablyOldHome": "probably old home IP",
+    "currentHome": "current home IP",
+    "noHome": "None of these",
+    "blocks": "Blocks",
+    "foreign_one": "{{count}} foreign rule is kept",
+    "foreign_other": "{{count}} foreign rules are kept",
+    "preview": "Preview",
+    "saveOnly": "Save only",
+    "saveAndApply": "Save and apply",
+    "saved": "{{name}} is now managed",
+    "noTemplate": "Please create a template first.",
+    "homeUnclear": "Not unambiguous. Without a choice all stay open as static IPs."
+  },
+  "newFirewall": {
+    "title": "New firewall",
+    "description": "Creates a firewall from a template in project {{project}}.",
+    "name": "Name",
+    "nameExists": "A firewall with this name already exists in the project.",
+    "create": "Create",
+    "created": "{{name}} created",
+    "assignHint": "Assign servers in the Hetzner Console.",
+    "labelHint": "Gets the label managed-by=hfenceline. No servers are assigned."
+  },
+  "templates": {
+    "title": "Templates",
+    "new": "New template",
+    "newName": "New template",
+    "copySuffix": "(copy)",
+    "duplicate": "Duplicate",
+    "name": "Template name",
+    "inUse": "Still used by firewalls",
+    "none": "No template yet.",
+    "blocksCount_one": "{{count}} block",
+    "blocksCount_other": "{{count}} blocks",
+    "usedBy_one": "{{count}} firewall",
+    "usedBy_other": "{{count}} firewalls",
+    "optional": "optional",
+    "defaultOn": "on by default",
+    "idHint": "Tag at Hetzner; stays fixed.",
+    "newBlock": "New block",
+    "addBlock": "Add block",
+    "addRule": "Add rule",
+    "noRules": "No rule yet.",
+    "unsaved": "Unsaved changes",
+    "deleteTitle": "Delete template {{name}}?",
+    "deleteText": "The template is removed from hFenceline.",
+    "saveTitle": "Save {{name}}",
+    "saveText_one": "Affects {{count}} firewall. Exceptions are kept.",
+    "saveText_other": "Affects {{count}} firewalls. Exceptions are kept.",
+    "changes_one": "{{count}} change",
+    "changes_other": "{{count}} changes",
+    "notLoaded": "not loaded",
+    "saveOnly": "Save only",
+    "saveAndApply_one": "Save and apply to {{count}} firewall",
+    "saveAndApply_other": "Save and apply to {{count}} firewalls",
+    "saved": "Template saved",
+    "applied_one": "Applied to {{count}} firewall",
+    "applied_other": "Applied to {{count}} firewalls",
+    "applyFailed_one": "{{count}} firewall could not be applied",
+    "applyFailed_other": "{{count}} firewalls could not be applied",
+    "optionalHelp": {
+      "title": "Optional",
+      "text": "Can be switched on and off per firewall. Otherwise the block always applies."
+    },
+    "defaultOnHelp": {
+      "title": "On by default",
+      "text": "Applies to firewalls without their own setting."
+    }
+  },
+  "log": {
+    "title": "Log",
+    "empty": "Nothing written yet.",
+    "oldLabels": "Labels before",
+    "newLabels": "Labels after",
+    "action": {
+      "set_rules": "Rules set",
+      "create": "Created",
+      "labels": "Labels"
+    },
+    "trigger": {
+      "home-ip": "Home IP",
+      "apply": "Apply",
+      "import": "Import",
+      "create": "New firewall"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "language": "Language",
+    "languageHint": "Interface, tray and messages",
+    "autostart": "Start with the system",
+    "autostartHint": "Starts in the tray only",
+    "desktopOnly": "Desktop app only",
+    "interval": "Check home IP every",
+    "intervalHint": "The background check only reads, it never writes.",
+    "minutes": "minutes",
+    "storage": "Storage",
+    "configFile": "Configuration",
+    "configFileHint": "config.yaml and audit.jsonl, without tokens",
+    "tokens": "Tokens",
+    "tokenBackend": {
+      "keyring": "In the operating system's password store",
+      "file": "In a file with permissions 600 (no password store found)",
+      "memory": "In memory only (demo/browser)",
+      "unknown": "Unknown"
+    }
+  },
+  "configError": {
+    "title": "Configuration invalid",
+    "text": "{{location}} could not be read. Fix the file and reload.",
+    "reload": "Reload"
+  },
+  "errors": {
+    "unexpected": "Unexpected error",
+    "config": "Configuration invalid",
+    "unknownTemplate": "Template missing",
+    "hetzner": {
+      "unauthorized": "Token invalid or expired",
+      "forbidden": "Token is not allowed to do this (read-only?)",
+      "not_found": "Not found at Hetzner",
+      "network": "Hetzner unreachable",
+      "timeout": "Hetzner timed out",
+      "rate_limit_exceeded": "Too many requests to Hetzner",
+      "invalid_input": "Hetzner rejected the input",
+      "uniqueness_error": "Name already taken",
+      "invalid_response": "Unexpected response from Hetzner",
+      "action_failed": "Hetzner reports an error",
+      "server_error": "Hetzner is having problems",
+      "other": "Hetzner error"
+    },
+    "homeip": {
+      "network": "IP service unreachable",
+      "http": "IP service reports an error",
+      "invalid": "IP service did not return a valid IPv4"
+    },
+    "secrets": {
+      "no-keyring": "No password store found",
+      "failed": "Password store reports an error"
+    }
+  },
+  "tray": {
+    "applyHomeIp_one": "Apply home IP ({{ip}} → {{count}} firewall)",
+    "applyHomeIp_other": "Apply home IP ({{ip}} → {{count}} firewalls)",
+    "applyHomeIpUnknown": "Apply home IP (IP unknown)",
+    "check": "Check status",
+    "open": "Open hFenceline",
+    "quit": "Quit",
+    "tooltip": {
+      "green": "all good",
+      "yellow": "drift or unprotected server",
+      "red": "home IP changed or error"
+    }
+  },
+  "wizard": {
+    "finish": "Finish",
+    "step1": {
+      "short": "Language",
+      "title": "Welcome to hFenceline",
+      "text": "Choose your language.",
+      "homeIp": "Your home IP",
+      "recheck": "Check again"
+    },
+    "step2": {
+      "short": "Template",
+      "title": "Review template",
+      "text": "This is the standard template. Adjust the blocks if needed.",
+      "later": "Can be changed later under Templates."
+    },
+    "step3": {
+      "short": "Projects",
+      "title": "Customers and projects",
+      "text": "One token (read & write) per Hetzner project.",
+      "first": "First project",
+      "another": "Another project"
+    },
+    "step4": {
+      "short": "Firewalls",
+      "title": "Import firewalls",
+      "text": "Choose a template or don't manage.",
+      "manageWith": "Manage with {{name}}",
+      "dontManage": "Don't manage",
+      "details": "Details",
+      "summary": "{{covered}} rules replaced by blocks · {{static}} static IPs · {{foreign}} foreign",
+      "homeFound": "home IP {{ip}}",
+      "noFirewalls": "No firewall in this project yet. Create one from a template.",
+      "allManaged": "All firewalls of this project are already managed.",
+      "toPreview_one": "Continue to preview ({{count}} firewall)",
+      "toPreview_other": "Continue to preview ({{count}} firewalls)",
+      "homeUnclear": "home IP unclear, choose under details"
+    },
+    "step5": {
+      "short": "Preview",
+      "title": "Preview and apply",
+      "text": "Nothing is written before you click Apply.",
+      "nothing": "No firewall selected.",
+      "skip": "Finish without applying",
+      "apply_one": "Apply {{count}} firewall",
+      "apply_other": "Apply {{count}} firewalls"
+    }
+  },
+  "licenses": {
+    "title": "Licenses",
+    "own": "hFenceline is licensed under the MIT license.",
+    "thirdParty": "Included software",
+    "search": "Search",
+    "missing": "License list missing (pnpm licenses).",
+    "system": "The AppImage also ships GTK, WebKitGTK and other system libraries (LGPL-2.1+). Sources: gtk.org, webkitgtk.org."
+  },
+  "update": {
+    "latest": "Up to date",
+    "available": "Update available: v{{version}}",
+    "unknown": "Update check not possible"
+  }
+}

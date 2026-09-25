@@ -1,0 +1,74 @@
+import { invoke, isTauri } from "@tauri-apps/api/core";
+
+export const isDesktop = isTauri();
+
+export async function openUrl(url: string): Promise<void> {
+  if (isDesktop) {
+    const { openUrl } = await import("@tauri-apps/plugin-opener");
+    await openUrl(url);
+  } else {
+    window.open(url, "_blank", "noopener");
+  }
+}
+
+export const autostart = {
+  async isEnabled(): Promise<boolean> {
+    if (!isDesktop) return false;
+    const m = await import("@tauri-apps/plugin-autostart");
+    return m.isEnabled();
+  },
+  async set(enabled: boolean): Promise<void> {
+    if (!isDesktop) return;
+    const m = await import("@tauri-apps/plugin-autostart");
+    if (enabled) await m.enable();
+    else await m.disable();
+  },
+};
+
+export async function showWindow(): Promise<void> {
+  if (!isDesktop) return;
+  const { getCurrentWindow } = await import("@tauri-apps/api/window");
+  const w = getCurrentWindow();
+  await w.show();
+  await w.unminimize();
+  await w.setFocus();
+}
+
+export async function hideWindow(): Promise<void> {
+  if (!isDesktop) return;
+  const { getCurrentWindow } = await import("@tauri-apps/api/window");
+  await getCurrentWindow().hide();
+}
+
+export async function quitApp(): Promise<void> {
+  if (!isDesktop) return;
+  await invoke("quit");
+}
+
+export async function trayAvailable(): Promise<boolean> {
+  if (!isDesktop) return false;
+  return invoke<boolean>("tray_available");
+}
+
+export async function startedHidden(): Promise<boolean> {
+  if (!isDesktop) return false;
+  return invoke<boolean>("started_hidden");
+}
+
+export async function onCloseToTray(hasTray: () => boolean): Promise<void> {
+  if (!isDesktop) return;
+  const { getCurrentWindow } = await import("@tauri-apps/api/window");
+  const w = getCurrentWindow();
+  await w.onCloseRequested(async (event) => {
+    if (hasTray()) {
+      event.preventDefault();
+      await w.hide();
+    }
+  });
+}
+
+export function consoleUrl(consoleProjectId?: number, serverId?: number): string {
+  if (!consoleProjectId) return "https://console.hetzner.com/projects";
+  const base = `https://console.hetzner.com/projects/${consoleProjectId}`;
+  return serverId ? `${base}/servers/${serverId}/firewalls` : `${base}/firewalls`;
+}

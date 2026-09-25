@@ -1,0 +1,12 @@
+{
+  "productName": "hfenceline",
+  "bundle": {
+    "linux": {
+      "deb": {
+        "desktopTemplate": "hfenceline.desktop",
+        "conflicts": ["h-fenceline"],
+        "replaces": ["h-fenceline"]
+      }
+    }
+  }
+}

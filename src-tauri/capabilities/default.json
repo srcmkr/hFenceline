@@ -1,0 +1,62 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "core:window:allow-show",
+    "core:window:allow-hide",
+    "core:window:allow-set-focus",
+    "core:window:allow-unminimize",
+    "core:window:allow-destroy",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://api.hetzner.cloud/*"
+        },
+        {
+          "url": "https://api.ipify.org/*"
+        },
+        {
+          "url": "https://api.github.com/repos/srcmkr/hFenceline/*"
+        }
+      ]
+    },
+    "fs:allow-exists",
+    "fs:allow-read-text-file",
+    "fs:allow-write-text-file",
+    "fs:allow-mkdir",
+    "fs:allow-rename",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "$CONFIG/hfenceline"
+        },
+        {
+          "path": "$CONFIG/hfenceline/**"
+        }
+      ]
+    },
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://console.hetzner.com/*"
+        },
+        {
+          "url": "https://github.com/srcmkr/hFenceline"
+        },
+        {
+          "url": "https://github.com/srcmkr/hFenceline/*"
+        }
+      ]
+    },
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled"
+  ]
+}
