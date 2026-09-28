@@ -10,7 +10,7 @@ import type { Ports } from "../ports";
 import { plan, type PlanResult } from "../plan/plan";
 import { homeIpOnlyRules } from "../plan/home";
 import { suggestAssignment, type AssignResult } from "../plan/assign";
-import { ruleKey, sourcesToFrom } from "../plan/rules";
+import { normalizePort, ruleKey, sourcesToFrom } from "../plan/rules";
 import { hostCidr } from "../net/ip";
 import { fetchLatestRelease, type Release } from "../update";
 import { BACKUP_FORMAT, projectTokenKeys, readBackup, type BackupPayload } from "../backup";
@@ -617,7 +617,8 @@ export class AppService {
         if (!target) return;
         const name = rule.description?.trim() || `${rule.protocol.toUpperCase()} ${rule.port ?? ""}`.trim();
         const extra: ExtraRule = { name, protocol: rule.protocol, from: sourcesToFrom(rule.source_ips) };
-        if (rule.port) extra.port = rule.port;
+        const port = normalizePort(rule.protocol, rule.port);
+        if (port) extra.port = port;
         const same = (x: ExtraRule) =>
           x.protocol === extra.protocol && x.port === extra.port && x.from.join(",") === extra.from.join(",");
         if ((target.extra_rules ?? []).some(same)) return;

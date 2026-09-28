@@ -8,8 +8,8 @@ const rule = (protocol: FirewallRule["protocol"], port: string | null, src: stri
   direction: "in", protocol, port, source_ips: src, destination_ips: [], description: d,
 });
 const admin = (ip: string) => [
-  rule("tcp", "1-65535", [`${ip}/32`], "hfl:admin Admin von zu Hause"),
-  rule("udp", "1-65535", [`${ip}/32`], "hfl:admin Admin von zu Hause"),
+  rule("tcp", "any", [`${ip}/32`], "hfl:admin Admin von zu Hause"),
+  rule("udp", "any", [`${ip}/32`], "hfl:admin Admin von zu Hause"),
   rule("icmp", null, [`${ip}/32`], "hfl:admin Admin von zu Hause"),
 ];
 

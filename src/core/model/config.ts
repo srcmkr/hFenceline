@@ -15,7 +15,7 @@ const id = z
   .string()
   .regex(/^[a-z0-9][a-z0-9-]*$/, "nur Kleinbuchstaben, Ziffern und Bindestrich");
 
-const port = z.string().regex(/^\d{1,5}(-\d{1,5})?$/, "Port oder Bereich wie 1024-5000");
+const port = z.string().regex(/^(any|\d{1,5}(-\d{1,5})?)$/, "Port, Bereich wie 1024-5000 oder any");
 
 export const RuleSpecSchema = z.object({
   protocol: z.enum(PROTOCOLS),

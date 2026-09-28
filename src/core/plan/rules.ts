@@ -3,7 +3,8 @@ import { SOURCE_ANY, SOURCE_HOME, SOURCE_STATIC } from "../model/config";
 import type { FirewallRule, HetznerProtocol } from "../hetzner/types";
 import { ANY_IPV4, ANY_IPV6, hostCidr, isAnySource, normalizeCidr } from "../net/ip";
 
-export const FULL_PORT_RANGE = "1-65535";
+export const ANY_PORT = "any";
+const FULL_PORT_RANGE = "1-65535";
 export const DESCRIPTION_PREFIX = "hfl:";
 export const EXTRA_RULE_ID = "extra";
 const MAX_DESCRIPTION = 255;
@@ -78,10 +79,10 @@ export function expandRuleSpec(spec: RuleSpec, ctx: ExpandContext, description: 
   });
   switch (spec.protocol) {
     case "all":
-      return [make("tcp", FULL_PORT_RANGE), make("udp", FULL_PORT_RANGE), make("icmp", null)];
+      return [make("tcp", ANY_PORT), make("udp", ANY_PORT), make("icmp", null)];
     case "tcp":
     case "udp":
-      return [make(spec.protocol, spec.port ?? FULL_PORT_RANGE)];
+      return [make(spec.protocol, spec.port ?? ANY_PORT)];
     default:
       return [make(spec.protocol, null)];
   }
@@ -102,7 +103,7 @@ export function blockUsesHome(block: Block): boolean {
 
 export function normalizePort(protocol: string, port: string | null | undefined): string | null {
   if (protocol !== "tcp" && protocol !== "udp") return null;
-  if (!port || port === "any") return FULL_PORT_RANGE;
+  if (!port || port === ANY_PORT || port === FULL_PORT_RANGE) return ANY_PORT;
   const m = /^(\d+)-(\d+)$/.exec(port);
   if (m && m[1] === m[2]) return m[1]!;
   return port;

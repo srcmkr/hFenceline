@@ -21,8 +21,8 @@ function web(desc = "hfl:web Web öffentlich") {
 }
 function full(sources: string[], desc: string) {
   return [
-    rule("tcp", "1-65535", sources, desc),
-    rule("udp", "1-65535", sources, desc),
+    rule("tcp", "any", sources, desc),
+    rule("udp", "any", sources, desc),
     rule("icmp", null, sources, desc),
   ];
 }
@@ -38,8 +38,8 @@ describe("desiredOwnedRules", () => {
   it("all -> tcp/udp/icmp", () => {
     const rules = desiredOwnedRules(T, FW, HOME).filter((r) => r.description?.startsWith("hfl:admin"));
     expect(rules.map((r) => [r.protocol, r.port])).toEqual([
-      ["tcp", "1-65535"],
-      ["udp", "1-65535"],
+      ["tcp", "any"],
+      ["udp", "any"],
       ["icmp", null],
     ]);
   });
@@ -105,6 +105,11 @@ describe("plan", () => {
     {
       name: "reihenfolge egal",
       actual: [...admin().reverse(), rule("tcp", "443-443", ["::/0", "0.0.0.0/0"], "hfl:web Web öffentlich"), rule("tcp", "80", any, "hfl:web Web öffentlich")],
+      expect: { inSync: true, homeIpOutdated: false, drifted: false, hasForeign: false },
+    },
+    {
+      name: "1-65535 aus älteren versionen",
+      actual: [...web(), ...admin().map((r) => (r.port === "any" ? { ...r, port: "1-65535" } : r))],
       expect: { inSync: true, homeIpOutdated: false, drifted: false, hasForeign: false },
     },
     {
@@ -244,8 +249,9 @@ describe("plan", () => {
 describe("rules", () => {
   it("normalisiert Ports", () => {
     expect(normalizePort("tcp", "80-80")).toBe("80");
-    expect(normalizePort("tcp", "any")).toBe("1-65535");
-    expect(normalizePort("udp", null)).toBe("1-65535");
+    expect(normalizePort("tcp", "any")).toBe("any");
+    expect(normalizePort("udp", null)).toBe("any");
+    expect(normalizePort("tcp", "1-65535")).toBe("any");
     expect(normalizePort("icmp", "80")).toBeNull();
   });
 

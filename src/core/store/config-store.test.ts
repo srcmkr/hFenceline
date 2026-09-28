@@ -94,6 +94,31 @@ customers: []
     expect(files.files.get("config.yaml")).toContain('from: [ "{home}", "{static}", any ] } # alt');
   });
 
+  it("port any", async () => {
+    const text = `version: 1
+language: de
+templates:
+  - { id: t, name: T, blocks: [] }
+customers:
+  - id: k
+    name: K
+    projects:
+      - id: p
+        name: P
+        firewalls:
+          - hetzner_id: 1
+            template: t
+            extra_rules:
+              - { name: SSH, protocol: tcp, from: [46.224.103.65/32], port: any }
+`;
+    const { store, files } = await storeWith(text);
+    const c = (await store.load())!;
+    const rule = c.customers[0]!.projects[0]!.firewalls[0]!.extra_rules![0]!;
+    expect(rule.port).toBe("any");
+    await store.save(c);
+    expect(files.files.get("config.yaml")).toContain("port: any");
+  });
+
   it("reihenfolge per id", async () => {
     const text = `version: 1
 language: de

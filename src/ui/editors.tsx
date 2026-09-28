@@ -12,7 +12,7 @@ import type { ExtraRule, Protocol, RuleSpec, StaticIp, Template } from "@/core/m
 import { PROTOCOLS, SOURCE_ANY, SOURCE_HOME, SOURCE_STATIC } from "@/core/model/config";
 import { hasHostBits, isValidCidr4, normalizeCidr } from "@/core/net/ip";
 import { ProtocolBadge } from "./rules";
-import { FULL_PORT_RANGE } from "@/core/plan/rules";
+import { ANY_PORT } from "@/core/plan/rules";
 import { HelpTip } from "./help-tip";
 
 export function sourceLabel(t: TFunction, s: string): string {
@@ -28,7 +28,7 @@ export function SpecSummary({ spec }: { spec: RuleSpec }) {
     <span className="inline-flex flex-wrap items-center gap-1.5 text-xs">
       <ProtocolBadge protocol={spec.protocol === "all" ? t("rules.fullAccess") : spec.protocol} />
       {(spec.protocol === "tcp" || spec.protocol === "udp") &&
-        (spec.port && spec.port !== FULL_PORT_RANGE ? (
+        (spec.port && spec.port !== ANY_PORT ? (
           <span className="font-mono">{spec.port}</span>
         ) : (
           <span className="text-muted-foreground">{t("rules.allPorts")}</span>
@@ -226,7 +226,7 @@ export function parseSources(t: TFunction, text: string, allowStatic: boolean): 
 
 function portProblem(t: TFunction, protocol: Protocol, port: string): string | null {
   if (protocol !== "tcp" && protocol !== "udp") return null;
-  if (!port.trim()) return null;
+  if (!port.trim() || port.trim() === ANY_PORT) return null;
   const m = /^(\d{1,5})(?:-(\d{1,5}))?$/.exec(port.trim());
   if (!m) return t("ruleEditor.invalidPort");
   const a = Number(m[1]);

@@ -83,7 +83,7 @@ Wechselt deine Home-IP über Nacht, zeigt das Tray-Symbol rot. Ein Klick auf **H
 | Feste IPs | voller Zugriff von den festen IPs der jeweiligen Firewall | immer aktiv, anfangs leer |
 | Ping | ICMP von überall | zuschaltbar, standardmäßig aus |
 
-Vorlagen lassen sich duplizieren, umbenennen und um eigene Bausteine erweitern. „Voller Zugriff“ übersetzt hFenceline in die Hetzner-Regeln TCP 1-65535, UDP 1-65535 und ICMP. Es gelten nur eingehende Regeln und nur IPv4.
+Vorlagen lassen sich duplizieren, umbenennen und um eigene Bausteine erweitern. „Voller Zugriff“ übersetzt hFenceline in die Hetzner-Regeln TCP any, UDP any und ICMP. Es gelten nur eingehende Regeln und nur IPv4.
 
 ## Sicherheit und Datenhoheit
 

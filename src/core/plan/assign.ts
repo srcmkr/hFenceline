@@ -6,7 +6,7 @@ import {
   atomKey,
   blockUsesHome,
   expandBlock,
-  FULL_PORT_RANGE,
+  ANY_PORT,
   isOwned,
   normalizeRule,
   ownerId,
@@ -51,7 +51,7 @@ function fullAccessSources(actual: FirewallRule[], template: Template): string[]
     if (isOwned(r) && !addressBlocks.has(ownerId(r) ?? "")) continue;
     const n = normalizeRule(r);
     const kind =
-      (n.protocol === "tcp" || n.protocol === "udp") && n.port === FULL_PORT_RANGE ? n.protocol : n.protocol === "icmp" ? "icmp" : null;
+      (n.protocol === "tcp" || n.protocol === "udp") && n.port === ANY_PORT ? n.protocol : n.protocol === "icmp" ? "icmp" : null;
     if (!kind) continue;
     for (const s of n.source_ips) {
       if (isAnySource(s) || !parseCidr4(s)) continue;
@@ -66,7 +66,7 @@ function soloHosts(rules: FirewallRule[]): string[] {
   for (const r of rules) {
     const n = normalizeRule(r);
     const only = n.source_ips[0];
-    if (n.protocol === "tcp" && n.port === FULL_PORT_RANGE && n.source_ips.length === 1 && only?.endsWith("/32")) {
+    if (n.protocol === "tcp" && n.port === ANY_PORT && n.source_ips.length === 1 && only?.endsWith("/32")) {
       out.add(only);
     }
   }
@@ -152,8 +152,8 @@ function mergeExtraRules(rules: FirewallRule[]): ExtraRule[] {
     const first = group[0]!;
     const name = ownerName(first) || "?";
     const from = sourcesToFrom(first.source_ips);
-    const tcp = group.findIndex((r) => r.protocol === "tcp" && r.port === FULL_PORT_RANGE);
-    const udp = group.findIndex((r) => r.protocol === "udp" && r.port === FULL_PORT_RANGE);
+    const tcp = group.findIndex((r) => r.protocol === "tcp" && r.port === ANY_PORT);
+    const udp = group.findIndex((r) => r.protocol === "udp" && r.port === ANY_PORT);
     const icmp = group.findIndex((r) => r.protocol === "icmp");
     let rest = group;
     if (tcp >= 0 && udp >= 0 && icmp >= 0) {

@@ -14,8 +14,8 @@ function rule(protocol: FirewallRule["protocol"], port: string | null, sources: 
   return { direction: "in", protocol, port, source_ips: sources, destination_ips: [], description };
 }
 const full = (sources: string[], desc: string | null = null) => [
-  rule("tcp", "1-65535", sources, desc),
-  rule("udp", "1-65535", sources, desc),
+  rule("tcp", "any", sources, desc),
+  rule("udp", "any", sources, desc),
   rule("icmp", null, sources, desc),
 ];
 
@@ -77,7 +77,7 @@ describe("suggestAssignment", () => {
   });
 
   it("tcp-only ist kein voller zugriff", () => {
-    const actual = [rule("tcp", "1-65535", ["203.0.113.99/32"]), rule("tcp", "1-65535", ["198.51.100.7/32"]), rule("udp", "1-65535", ["198.51.100.7/32"])];
+    const actual = [rule("tcp", "any", ["203.0.113.99/32"]), rule("tcp", "any", ["198.51.100.7/32"]), rule("udp", "any", ["198.51.100.7/32"])];
     const r = suggestAssignment({ template: T, actual, homeIp: HOME });
     expect(r.homeCandidate).toBeNull();
     expect(r.fullAccessHosts).toEqual([]);
@@ -87,7 +87,7 @@ describe("suggestAssignment", () => {
   });
 
   it("tcp-only bleibt tcp-only", () => {
-    const tcpOnly = rule("tcp", "1-65535", ["198.51.100.7/32"], "Backup-Server");
+    const tcpOnly = rule("tcp", "any", ["198.51.100.7/32"], "Backup-Server");
     const actual = [...full([`${HOME}/32`]), tcpOnly];
     const r = suggestAssignment({ template: T, actual, homeIp: HOME });
     const p = plan({

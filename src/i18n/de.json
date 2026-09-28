@@ -119,7 +119,7 @@
     "sourcesRequired": "Mindestens eine Quelle angeben.",
     "invalidSource": "Ungültige Quelle: {{value}}",
     "noStaticHere": "{static} ist hier nicht möglich.",
-    "invalidPort": "Port 1-65535 oder Bereich (1024-5000)"
+    "invalidPort": "Port 1-65535, Bereich (1024-5000) oder any"
   },
   "preview": {
     "title": "Vorschau: {{name}}",

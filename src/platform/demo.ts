@@ -7,7 +7,7 @@ const any = ["0.0.0.0/0", "::/0"];
 const r = (protocol: FirewallRule["protocol"], port: string | null, src: string[], d: string | null = null): FirewallRule => ({
   direction: "in", protocol, port, source_ips: src, destination_ips: [], description: d,
 });
-const full = (src: string[], d: string | null = null) => [r("tcp", "1-65535", src, d), r("udp", "1-65535", src, d), r("icmp", null, src, d)];
+const full = (src: string[], d: string | null = null) => [r("tcp", "any", src, d), r("udp", "any", src, d), r("icmp", null, src, d)];
 const managed = { "managed-by": "hfenceline" };
 
 const CONFIG = `# Demo-Konfiguration

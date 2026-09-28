@@ -3,7 +3,7 @@ import { Globe, House, Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { FirewallRule } from "@/core/hetzner/types";
 import { ANY_IPV4, ANY_IPV6, normalizeCidr } from "@/core/net/ip";
-import { FULL_PORT_RANGE, normalizePort } from "@/core/plan/rules";
+import { ANY_PORT, normalizePort } from "@/core/plan/rules";
 
 export interface SourceContext {
   homeIp: string | null;
@@ -22,7 +22,7 @@ export function PortLabel({ rule }: { rule: FirewallRule }) {
   const { t } = useTranslation();
   const port = normalizePort(rule.protocol, rule.port);
   if (port === null) return <span className="text-muted-foreground">-</span>;
-  if (port === FULL_PORT_RANGE) return <span className="text-muted-foreground">{t("rules.allPorts")}</span>;
+  if (port === ANY_PORT) return <span className="text-muted-foreground">{t("rules.allPorts")}</span>;
   return <span className="font-mono tabular-nums">{port}</span>;
 }
 

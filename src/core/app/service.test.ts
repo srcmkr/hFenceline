@@ -11,7 +11,7 @@ const any = ["0.0.0.0/0", "::/0"];
 const rule = (protocol: FirewallRule["protocol"], port: string | null, src: string[], d: string | null = null): FirewallRule => ({
   direction: "in", protocol, port, source_ips: src, destination_ips: [], description: d,
 });
-const full = (src: string[]) => [rule("tcp", "1-65535", src), rule("udp", "1-65535", src), rule("icmp", null, src)];
+const full = (src: string[]) => [rule("tcp", "any", src), rule("udp", "any", src), rule("icmp", null, src)];
 
 function handmade(id: number): Firewall {
   return {
@@ -232,6 +232,17 @@ describe("AppService", () => {
     const fw = api.projects.get("tok-web")!.firewalls[0]!;
     expect(fw.rules.filter((r) => r.port === "5432")).toEqual([rule("tcp", "5432", ["198.51.100.20/32"], "hfl:extra Postgres Kunde")]);
     expect(svc.getState().overview!.firewalls[0]!.states).toEqual(["ok"]);
+  });
+
+  it("fremde regel mit port any übernehmen", async () => {
+    const { key } = await setupManaged();
+    await svc.applyFirewall(key);
+    const foreign = rule("tcp", "any", ["46.224.103.65/32"], "SSH Deploy");
+
+    await svc.setForeignChoice(key, foreign, "adopt");
+    expect(svc.getState().config!.customers[0]!.projects[0]!.firewalls[0]!.extra_rules).toEqual([
+      { name: "SSH Deploy", protocol: "tcp", port: "any", from: ["46.224.103.65/32"] },
+    ]);
   });
 
   it("ist ins soll", async () => {
