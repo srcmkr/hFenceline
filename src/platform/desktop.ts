@@ -93,3 +93,12 @@ export function writeBackupFile(path: string, passphrase: string, payload: strin
 export function readBackupFile(path: string, passphrase: string): Promise<string> {
   return invoke<string>("backup_import", { path, passphrase });
 }
+
+export async function copyText(text: string): Promise<void> {
+  if (isDesktop) {
+    const { writeText } = await import("@tauri-apps/plugin-clipboard-manager");
+    await writeText(text);
+  } else {
+    await navigator.clipboard.writeText(text);
+  }
+}

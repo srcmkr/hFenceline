@@ -32,6 +32,7 @@ import { ManageDialog } from "../dialogs/manage-dialog";
 import { NewFirewallDialog } from "../dialogs/new-firewall-dialog";
 import { TokenDialog } from "../dialogs/project-dialog";
 import { ConfirmDialog } from "../dialogs/confirm-dialog";
+import { CopyButton } from "../copy-button";
 import { consoleUrl, openUrl } from "@/platform/desktop";
 
 export function ProjectPage({ view }: { view: ProjectView }) {
@@ -208,7 +209,16 @@ export function ProjectPage({ view }: { view: ProjectView }) {
                 return (
                   <TableRow key={s.id}>
                     <TableCell className="pl-4 font-medium">{s.name}</TableCell>
-                    <TableCell className="font-mono text-xs">{s.public_net.ipv4?.ip ?? "-"}</TableCell>
+                    <TableCell className="font-mono text-xs">
+                      {s.public_net.ipv4 ? (
+                        <span className="inline-flex items-center gap-1">
+                          {s.public_net.ipv4.ip}
+                          <CopyButton text={s.public_net.ipv4.ip} />
+                        </span>
+                      ) : (
+                        "-"
+                      )}
+                    </TableCell>
                     <TableCell>
                       {fws.length === 0 ? (
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-700 dark:text-amber-400">

@@ -2,12 +2,15 @@ import { useTranslation } from "react-i18next";
 import { Globe, House, Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { FirewallRule } from "@/core/hetzner/types";
-import { ANY_IPV4, ANY_IPV6, normalizeCidr } from "@/core/net/ip";
+import { ANY_IPV4, ANY_IPV6, isValidCidr4, normalizeCidr } from "@/core/net/ip";
 import { ANY_PORT, normalizePort } from "@/core/plan/rules";
+import { CopyButton } from "./copy-button";
 
 export interface SourceContext {
   homeIp: string | null;
   notes?: Map<string, string | undefined>;
+  /** Copy-Button an IPv4-Quellen anbieten. */
+  copy?: boolean;
 }
 
 export function ProtocolBadge({ protocol }: { protocol: string }) {
@@ -43,6 +46,7 @@ export function SourceChips({ sources, ctx }: { sources: string[]; ctx: SourceCo
       {rest.map((s) => {
         const isHome = s === home;
         const note = ctx.notes?.get(s);
+        const shown = s.endsWith("/32") ? s.slice(0, -3) : s;
         return (
           <span
             key={s}
@@ -53,8 +57,9 @@ export function SourceChips({ sources, ctx }: { sources: string[]; ctx: SourceCo
             title={note}
           >
             {isHome && <House className="size-3" />}
-            {s.endsWith("/32") ? s.slice(0, -3) : s}
+            {shown}
             {note && <span className="font-sans text-muted-foreground">· {note}</span>}
+            {ctx.copy && s !== ANY_IPV4 && isValidCidr4(s) && <CopyButton compact text={shown} />}
           </span>
         );
       })}

@@ -12,6 +12,7 @@ import type { ExtraRule, Protocol, RuleSpec, StaticIp, Template } from "@/core/m
 import { PROTOCOLS, SOURCE_ANY, SOURCE_HOME, SOURCE_STATIC } from "@/core/model/config";
 import { hasHostBits, isValidCidr4, normalizeCidr } from "@/core/net/ip";
 import { ProtocolBadge } from "./rules";
+import { CopyButton } from "./copy-button";
 import { ANY_PORT } from "@/core/plan/rules";
 import { HelpTip } from "./help-tip";
 
@@ -22,7 +23,7 @@ export function sourceLabel(t: TFunction, s: string): string {
   return s.endsWith("/32") ? s.slice(0, -3) : s;
 }
 
-export function SpecSummary({ spec }: { spec: RuleSpec }) {
+export function SpecSummary({ spec, copy }: { spec: RuleSpec; copy?: boolean }) {
   const { t } = useTranslation();
   return (
     <span className="inline-flex flex-wrap items-center gap-1.5 text-xs">
@@ -38,7 +39,7 @@ export function SpecSummary({ spec }: { spec: RuleSpec }) {
         <span
           key={f}
           className={cn(
-            "rounded px-1.5 py-0.5",
+            "inline-flex items-center gap-1 rounded px-1.5 py-0.5",
             f === SOURCE_HOME
               ? "bg-violet-500/10 text-violet-700 dark:text-violet-300"
               : f === SOURCE_ANY
@@ -49,6 +50,7 @@ export function SpecSummary({ spec }: { spec: RuleSpec }) {
           )}
         >
           {sourceLabel(t, f)}
+          {copy && isValidCidr4(f) && <CopyButton compact text={sourceLabel(t, f)} />}
         </span>
       ))}
     </span>
@@ -60,11 +62,13 @@ export function BlockToggles({
   blocks,
   onChange,
   disabled,
+  copy,
 }: {
   template: Template;
   blocks: Record<string, boolean> | undefined;
   onChange: (blocks: Record<string, boolean>) => void;
   disabled?: boolean;
+  copy?: boolean;
 }) {
   const { t } = useTranslation();
   return (
@@ -77,7 +81,7 @@ export function BlockToggles({
               <div className="text-sm font-medium">{b.name}</div>
               <div className="flex flex-col gap-1">
                 {b.rules.map((r, i) => (
-                  <SpecSummary key={i} spec={r} />
+                  <SpecSummary key={i} spec={r} copy={copy} />
                 ))}
               </div>
             </div>
@@ -116,10 +120,12 @@ export function StaticIpEditor({
   value,
   onChange,
   disabled,
+  copy,
 }: {
   value: StaticIp[];
   onChange: (next: StaticIp[]) => void;
   disabled?: boolean;
+  copy?: boolean;
 }) {
   const { t } = useTranslation();
   const [cidr, setCidr] = useState("");
@@ -139,34 +145,40 @@ export function StaticIpEditor({
     <div>
       {value.length === 0 && <p className="px-4 py-3 text-sm text-muted-foreground">{t("staticIps.empty")}</p>}
       <div className="divide-y">
-        {value.map((s, i) => (
-          <div key={s.cidr} className="flex items-center gap-3 px-4 py-2">
-            <span className="w-40 shrink-0 font-mono text-sm">{s.cidr.endsWith("/32") ? s.cidr.slice(0, -3) : s.cidr}</span>
-            <Input
-              defaultValue={s.note ?? ""}
-              placeholder={t("staticIps.notePlaceholder")}
-              className="h-8 flex-1"
-              disabled={disabled}
-              onBlur={(e) => {
-                const n = e.target.value.trim();
-                if (n === (s.note ?? "")) return;
-                const next = [...value];
-                next[i] = n ? { cidr: s.cidr, note: n } : { cidr: s.cidr };
-                onChange(next);
-              }}
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8 text-muted-foreground hover:text-destructive"
-              disabled={disabled}
-              aria-label={t("common.remove")}
-              onClick={() => onChange(value.filter((_, j) => j !== i))}
-            >
-              <Trash2 className="size-4" />
-            </Button>
-          </div>
-        ))}
+        {value.map((s, i) => {
+          const shown = s.cidr.endsWith("/32") ? s.cidr.slice(0, -3) : s.cidr;
+          return (
+            <div key={s.cidr} className="flex items-center gap-3 px-4 py-2">
+              <span className="flex w-48 shrink-0 items-center gap-1 font-mono text-sm">
+                {shown}
+                {copy && <CopyButton text={shown} />}
+              </span>
+              <Input
+                defaultValue={s.note ?? ""}
+                placeholder={t("staticIps.notePlaceholder")}
+                className="h-8 flex-1"
+                disabled={disabled}
+                onBlur={(e) => {
+                  const n = e.target.value.trim();
+                  if (n === (s.note ?? "")) return;
+                  const next = [...value];
+                  next[i] = n ? { cidr: s.cidr, note: n } : { cidr: s.cidr };
+                  onChange(next);
+                }}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8 text-muted-foreground hover:text-destructive"
+                disabled={disabled}
+                aria-label={t("common.remove")}
+                onClick={() => onChange(value.filter((_, j) => j !== i))}
+              >
+                <Trash2 className="size-4" />
+              </Button>
+            </div>
+          );
+        })}
       </div>
       <form
         className="flex items-start gap-3 border-t bg-muted/30 px-4 py-3"
@@ -175,7 +187,7 @@ export function StaticIpEditor({
           add();
         }}
       >
-        <div className="w-40 shrink-0 space-y-1">
+        <div className="w-48 shrink-0 space-y-1">
           <Input
             value={cidr}
             onChange={(e) => setCidr(e.target.value)}
@@ -341,10 +353,12 @@ export function ExtraRulesEditor({
   value,
   onChange,
   disabled,
+  copy,
 }: {
   value: ExtraRule[];
   onChange: (next: ExtraRule[]) => void;
   disabled?: boolean;
+  copy?: boolean;
 }) {
   const { t } = useTranslation();
   const [adding, setAdding] = useState(false);
@@ -371,18 +385,29 @@ export function ExtraRulesEditor({
               />
             </div>
           ) : (
-            <div key={i} className="flex items-center gap-3 px-4 py-2.5">
-              <button className="min-w-0 flex-1 space-y-1 text-left" disabled={disabled} onClick={() => setEditing(i)}>
-                <div className="text-sm font-medium">{r.name}</div>
-                <SpecSummary spec={r} />
-              </button>
+            // Die ganze Zeile öffnet den Editor; der Name ist der Tastatur-Zugang dazu (sein Klick steigt zur Zeile auf).
+            // Copy- und Löschen-Buttons stoppen die Weitergabe, damit sie nicht in den Editor springen.
+            <div
+              key={i}
+              className={cn("flex items-center gap-3 px-4 py-2.5", !disabled && "cursor-pointer transition-colors hover:bg-muted/40")}
+              onClick={() => !disabled && setEditing(i)}
+            >
+              <div className="min-w-0 flex-1 space-y-1">
+                <button type="button" className="block text-left text-sm font-medium" disabled={disabled}>
+                  {r.name}
+                </button>
+                <SpecSummary spec={r} copy={copy} />
+              </div>
               <Button
                 variant="ghost"
                 size="icon"
                 className="size-8 text-muted-foreground hover:text-destructive"
                 disabled={disabled}
                 aria-label={t("common.remove")}
-                onClick={() => onChange(value.filter((_, j) => j !== i))}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange(value.filter((_, j) => j !== i));
+                }}
               >
                 <Trash2 className="size-4" />
               </Button>

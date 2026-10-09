@@ -38,6 +38,7 @@ import { RuleRow, type SourceContext } from "../rules";
 import { errorText, useAction } from "../errors";
 import { PreviewDialog } from "../dialogs/preview-dialog";
 import { ConfirmDialog } from "../dialogs/confirm-dialog";
+import { CopyButton } from "../copy-button";
 import { consoleUrl, openUrl } from "@/platform/desktop";
 import { useNav } from "../navigation";
 
@@ -65,7 +66,7 @@ export function FirewallPage({ view }: { view: FirewallView }) {
   const [foreignChoice] = useAction((rule: FirewallRule, choice: ForeignChoice) => service.setForeignChoice(view.key, rule, choice));
 
   const notes = new Map((view.config.static_ips ?? []).map((s) => [normalizeCidr(s.cidr), s.note]));
-  const ctx: SourceContext = { homeIp: state.homeIp, notes };
+  const ctx: SourceContext = { homeIp: state.homeIp, notes, copy: true };
   const canApply = !!plan && (!plan.status.inSync || pending.length > 0);
   const err = view.error ? errorText(t, view.error) : null;
 
@@ -141,6 +142,7 @@ export function FirewallPage({ view }: { view: FirewallView }) {
                 template={view.template}
                 blocks={view.config.blocks}
                 onChange={(blocks) => void save((fw) => void (fw.blocks = blocks))}
+                copy
               />
             ) : (
               <p className="p-4 text-sm text-destructive">{t("errors.unknownTemplate")}</p>
@@ -151,6 +153,7 @@ export function FirewallPage({ view }: { view: FirewallView }) {
             <StaticIpEditor
               value={view.config.static_ips ?? []}
               onChange={(next) => void save((fw) => void (fw.static_ips = next))}
+              copy
             />
           </Section>
 
@@ -158,6 +161,7 @@ export function FirewallPage({ view }: { view: FirewallView }) {
             <ExtraRulesEditor
               value={view.config.extra_rules ?? []}
               onChange={(next) => void save((fw) => void (fw.extra_rules = next))}
+              copy
             />
           </Section>
         </div>
@@ -227,7 +231,12 @@ export function FirewallPage({ view }: { view: FirewallView }) {
                   <div key={s.id} className="flex items-center gap-3 px-4 py-2 text-sm">
                     <span className={cn("size-2 rounded-full", s.status === "running" ? "bg-emerald-500" : "bg-muted-foreground/40")} />
                     <span className="font-medium">{s.name}</span>
-                    <span className="font-mono text-xs text-muted-foreground">{s.public_net.ipv4?.ip}</span>
+                    {s.public_net.ipv4 && (
+                      <span className="inline-flex items-center gap-1 font-mono text-xs text-muted-foreground">
+                        {s.public_net.ipv4.ip}
+                        <CopyButton text={s.public_net.ipv4.ip} />
+                      </span>
+                    )}
                     <span className="ml-auto text-xs text-muted-foreground">
                       {view.hetzner?.applied_to.some((a) => a.type === "label_selector") ? t("servers.viaLabel") : ""}
                     </span>
