@@ -169,6 +169,36 @@ Häufige Befehle:
 | `src/i18n` | Übersetzungen Deutsch und Englisch |
 | `src-tauri` | Rust-Hülle: Plugins, Passwortspeicher, Fenster |
 
+## Wie dieses Projekt entsteht
+
+Dieses Projekt entsteht mit KI, und ich sage das offen. Es begann mit einem
+Problem, das ich selbst hatte; der Großteil des Codes stammt von
+KI-Coding-Agenten, die ich steuere, mit 35 Jahren Erfahrung in der
+Softwareentwicklung im Rücken.
+
+Das ist **Augmented Coding**, kein Vibe Coding.
+[Vibe Coding](https://de.wikipedia.org/wiki/Vibe_Coding) meint, wie Andrej
+Karpathy den Begriff geprägt hat, alles zu übernehmen, was das Modell
+schreibt, ohne sich den Code anzusehen.
+[Augmented Coding](https://tidyfirst.substack.com/p/augmented-coding-beyond-the-vibes)
+heißt nach Kent Beck, die KI zu getestetem, wartbarem Code zu führen und für
+das Ergebnis einzustehen. Der Unterschied liegt nicht darin, wer tippt,
+sondern darin, wer entscheidet und wie das Ergebnis geprüft wird.
+
+- **Ich entscheide.** Umfang, Architektur und Abwägungen liegen bei mir: Ich
+  treffe sie oder nehme sie ab. Die KI schlägt vor und setzt um; das letzte
+  Wort hat sie nicht.
+- **Tests legen fest, was „funktioniert“ heißt.** Bei jedem Push auf den
+  Hauptzweig und bei jedem Pull Request laufen automatisierte Tests. Neue
+  Funktionen probiere ich vor einem Release in der echten Anwendung aus, und
+  dabei gefundene Fehler werden behoben.
+- **Nichts wird versteckt.** Code, Tests und Historie liegen offen, jeder kann
+  sie lesen und beurteilen.
+
+Wir haben 2026. Gute Software zeichnet sich nicht mehr dadurch aus, dass jede
+Zeile von Hand geschrieben ist, sondern dadurch, dass jemand für jede
+Entscheidung geradesteht.
+
 ## Mitmachen
 
 Fehlerberichte, Ideen und Pull Requests sind willkommen.
